@@ -1,0 +1,11 @@
+{
+  "name": "demo",
+  "authors": [
+    "Gonzalo Chumillas <gonzalo.chumillas@gmail.com>"
+  ],
+  "description": "Image Editor Demonstration",
+  "dependencies": {
+    "requirejs": "~2.3",
+    "jquery": "~3.2"
+  }
+}

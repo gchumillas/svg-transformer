@@ -1,0 +1,10 @@
+{
+    "p": "./tsconfig.json",
+    "defaultSeverity": "error",
+    "rules": {
+        "max-line-length": [true, 80],
+        "no-console": [false],
+        "no-reference": false
+    },
+    "extends": "tslint:recommended"
+}
