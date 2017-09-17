@@ -11,5 +11,8 @@
   "compileOnSave": true,
   "filesGlob": [
     "src/**/*.ts"
+  ],
+  "exclude": [
+    "demo"
   ]
 }
