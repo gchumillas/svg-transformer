@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "module": "amd",
+    "noImplicitAny": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "outFile": "./dist/ImageEditor.js",
+    "sourceMap": false,
+    "target": "ES5"
+  },
+  "compileOnSave": true,
+  "filesGlob": [
+    "src/**/*.ts"
+  ]
+}
