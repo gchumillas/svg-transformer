@@ -5,6 +5,7 @@ require.config({
     }
 });
 
-define(['ImageEditor'], function (editor) {
-  console.log(editor.ImageEditor);
+define(['ImageEditor'], function (ImageEditor) {
+  var editor = new ImageEditor();
+  editor.test();
 });

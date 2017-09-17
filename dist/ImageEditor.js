@@ -535,8 +535,7 @@ define("svg/SvgGraphicElement", ["require", "exports", "euclidean/dim2/Transform
 });
 define("ImageEditor", ["require", "exports", "euclidean/Vector", "svg/SvgGraphicElement"], function (require, exports, Vector_8, SvgGraphicElement_2) {
     "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    var ImageEditor = (function () {
+    return (function () {
         function ImageEditor() {
         }
         ImageEditor.prototype.test = function () {
@@ -546,7 +545,6 @@ define("ImageEditor", ["require", "exports", "euclidean/Vector", "svg/SvgGraphic
         };
         return ImageEditor;
     }());
-    exports.ImageEditor = ImageEditor;
 });
 define("euclidean/Point", ["require", "exports"], function (require, exports) {
     "use strict";
