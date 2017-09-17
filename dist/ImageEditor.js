@@ -533,86 +533,7 @@ define("svg/SvgGraphicElement", ["require", "exports", "euclidean/dim2/Transform
     }(SvgElement_1.SvgElement));
     exports.SvgGraphicElement = SvgGraphicElement;
 });
-define("ImageEditor", ["require", "exports", "euclidean/Vector", "svg/SvgGraphicElement"], function (require, exports, Vector_8, SvgGraphicElement_2) {
-    "use strict";
-    return (function () {
-        function ImageEditor() {
-        }
-        ImageEditor.prototype.test = function () {
-            var elem = new SvgGraphicElement_2.SvgGraphicElement("g");
-            console.log(elem);
-            return new Vector_8.Vector(1, 2, 3);
-        };
-        return ImageEditor;
-    }());
-});
-define("euclidean/Point", ["require", "exports"], function (require, exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-});
-define("euclidean/dim2/Line", ["require", "exports", "euclidean/SquareMatrix", "euclidean/dim2/Transformation", "euclidean/dim2/Vector"], function (require, exports, SquareMatrix_2, Transformation_3, Vector_9) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    var Line = (function () {
-        function Line(origin, direction) {
-            this.origin = origin;
-            this.direction = direction;
-        }
-        Line.prototype.getParallel = function (p) {
-            return new Line(p, this.direction);
-        };
-        Line.prototype.getPerpendicular = function (p) {
-            return new Line(p, new Vector_9.Vector(-this.direction.y, this.direction.x));
-        };
-        Line.prototype.isParallel = function (l) {
-            var v0 = this.direction;
-            var v1 = l.direction;
-            return v0.x * v1.y === v1.x * v0.y;
-        };
-        Line.prototype.getIntersection = function (l) {
-            var _a = [this.origin, l.origin], p0 = _a[0], p1 = _a[1];
-            var _b = [this.direction, l.direction], v0 = _b[0], v1 = _b[1];
-            var m = new SquareMatrix_2.SquareMatrix(v0, v1.opposite());
-            var v = p1.subtract(p0);
-            var w = v.multiply(m.inverse());
-            return p0.transform(new Transformation_3.Transformation().translate(v0.scale(w.x)));
-        };
-        return Line;
-    }());
-    exports.Line = Line;
-});
-define("svg/SvgPath", ["require", "exports", "svg/SvgGraphicElement"], function (require, exports, SvgGraphicElement_3) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    var SvgPath = (function (_super) {
-        __extends(SvgPath, _super);
-        function SvgPath() {
-            var _this = _super.call(this, "path") || this;
-            _this.strokeColor = "black";
-            _this.strokeWidth = 2;
-            _this
-                .setAttr("stroke", _this.strokeColor)
-                .setAttr("stroke-width", _this.strokeWidth)
-                .setAttr("fill", "transparent");
-            return _this;
-        }
-        SvgPath.prototype.moveTo = function (value) {
-            this.setAttr("d", [this.getAttr("d") || "", "M" + value.x + " " + value.y].join(" "));
-            return this;
-        };
-        SvgPath.prototype.lineTo = function (value) {
-            this.setAttr("d", [this.getAttr("d") || "", "L" + value.x + " " + value.y].join(" "));
-            return this;
-        };
-        SvgPath.prototype.close = function () {
-            this.setAttr("d", [this.getAttr("d") || "", "Z"].join(" "));
-            return this;
-        };
-        return SvgPath;
-    }(SvgGraphicElement_3.SvgGraphicElement));
-    exports.SvgPath = SvgPath;
-});
-define("svg/Transformer/Dragger", ["require", "exports", "euclidean/dim2/Vector", "svg/SvgGraphicElement"], function (require, exports, Vector_10, SvgGraphicElement_4) {
+define("svg/ElementTransformer/Dragger", ["require", "exports", "euclidean/dim2/Vector", "svg/SvgGraphicElement"], function (require, exports, Vector_8, SvgGraphicElement_2) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var Dragger = (function (_super) {
@@ -628,7 +549,7 @@ define("svg/Transformer/Dragger", ["require", "exports", "euclidean/dim2/Vector"
             get: function () {
                 var x = parseInt(this.getAttr("x"), 10);
                 var y = parseInt(this.getAttr("y"), 10);
-                return new Vector_10.Vector(x, y);
+                return new Vector_8.Vector(x, y);
             },
             set: function (value) {
                 this
@@ -659,10 +580,10 @@ define("svg/Transformer/Dragger", ["require", "exports", "euclidean/dim2/Vector"
             configurable: true
         });
         return Dragger;
-    }(SvgGraphicElement_4.SvgGraphicElement));
+    }(SvgGraphicElement_2.SvgGraphicElement));
     exports.Dragger = Dragger;
 });
-define("svg/Transformer/Handle", ["require", "exports", "euclidean/dim2/Vector", "svg/SvgGraphicElement"], function (require, exports, Vector_11, SvgGraphicElement_5) {
+define("svg/ElementTransformer/Handle", ["require", "exports", "euclidean/dim2/Vector", "svg/SvgGraphicElement"], function (require, exports, Vector_9, SvgGraphicElement_3) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var Handle = (function (_super) {
@@ -684,7 +605,7 @@ define("svg/Transformer/Handle", ["require", "exports", "euclidean/dim2/Vector",
             get: function () {
                 var x = parseInt(this.getAttr("cx"), 10);
                 var y = parseInt(this.getAttr("cy"), 10);
-                return new Vector_11.Vector(x, y);
+                return new Vector_9.Vector(x, y);
             },
             set: function (value) {
                 this
@@ -695,17 +616,48 @@ define("svg/Transformer/Handle", ["require", "exports", "euclidean/dim2/Vector",
             configurable: true
         });
         return Handle;
-    }(SvgGraphicElement_5.SvgGraphicElement));
+    }(SvgGraphicElement_3.SvgGraphicElement));
     exports.Handle = Handle;
 });
-define("svg/Transformer", ["require", "exports", "euclidean/dim2/Transformation", "euclidean/dim2/Vector", "euclidean/SquareMatrix", "svg/SvgGraphicElement", "svg/SvgPath", "svg/Transformer/Dragger", "svg/Transformer/Handle"], function (require, exports, Transformation_4, Vector_12, SquareMatrix_3, SvgGraphicElement_6, SvgPath_1, Dragger_1, Handle_1) {
+define("svg/SvgPath", ["require", "exports", "svg/SvgGraphicElement"], function (require, exports, SvgGraphicElement_4) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var SvgPath = (function (_super) {
+        __extends(SvgPath, _super);
+        function SvgPath() {
+            var _this = _super.call(this, "path") || this;
+            _this.strokeColor = "black";
+            _this.strokeWidth = 2;
+            _this
+                .setAttr("stroke", _this.strokeColor)
+                .setAttr("stroke-width", _this.strokeWidth)
+                .setAttr("fill", "transparent");
+            return _this;
+        }
+        SvgPath.prototype.moveTo = function (value) {
+            this.setAttr("d", [this.getAttr("d") || "", "M" + value.x + " " + value.y].join(" "));
+            return this;
+        };
+        SvgPath.prototype.lineTo = function (value) {
+            this.setAttr("d", [this.getAttr("d") || "", "L" + value.x + " " + value.y].join(" "));
+            return this;
+        };
+        SvgPath.prototype.close = function () {
+            this.setAttr("d", [this.getAttr("d") || "", "Z"].join(" "));
+            return this;
+        };
+        return SvgPath;
+    }(SvgGraphicElement_4.SvgGraphicElement));
+    exports.SvgPath = SvgPath;
+});
+define("svg/ElementTransformer", ["require", "exports", "euclidean/dim2/Transformation", "euclidean/dim2/Vector", "euclidean/SquareMatrix", "svg/ElementTransformer/Dragger", "svg/ElementTransformer/Handle", "svg/SvgGraphicElement", "svg/SvgPath"], function (require, exports, Transformation_3, Vector_10, SquareMatrix_2, Dragger_1, Handle_1, SvgGraphicElement_5, SvgPath_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var ElementTransformer = (function () {
         function ElementTransformer(target) {
             this.target = target;
             var canvas = this.target.ownerElement;
-            this.container = new SvgGraphicElement_6.SvgGraphicElement("g");
+            this.container = new SvgGraphicElement_5.SvgGraphicElement("g");
             this.container.transform(this.target.transformation);
             canvas.append(this.container);
             this._createPath();
@@ -716,13 +668,13 @@ define("svg/Transformer", ["require", "exports", "euclidean/dim2/Transformation"
         ElementTransformer.prototype._createPath = function () {
             var box = this.target.getBoundingBox();
             var path = new SvgPath_1.SvgPath()
-                .moveTo(new Vector_12.Vector(box.x + box.width / 2, box.y - 30))
-                .lineTo(new Vector_12.Vector(box.x + box.width / 2, box.y))
-                .lineTo(new Vector_12.Vector(box.x, box.y))
-                .lineTo(new Vector_12.Vector(box.x, box.y + box.height))
-                .lineTo(new Vector_12.Vector(box.x + box.width, box.y + box.height))
-                .lineTo(new Vector_12.Vector(box.x + box.width, box.y))
-                .lineTo(new Vector_12.Vector(box.x + box.width / 2, box.y));
+                .moveTo(new Vector_10.Vector(box.x + box.width / 2, box.y - 30))
+                .lineTo(new Vector_10.Vector(box.x + box.width / 2, box.y))
+                .lineTo(new Vector_10.Vector(box.x, box.y))
+                .lineTo(new Vector_10.Vector(box.x, box.y + box.height))
+                .lineTo(new Vector_10.Vector(box.x + box.width, box.y + box.height))
+                .lineTo(new Vector_10.Vector(box.x + box.width, box.y))
+                .lineTo(new Vector_10.Vector(box.x + box.width / 2, box.y));
             this.container.append(path);
         };
         ElementTransformer.prototype._createDragger = function () {
@@ -731,7 +683,7 @@ define("svg/Transformer", ["require", "exports", "euclidean/dim2/Transformation"
             var p0;
             var t0;
             var dragger = new Dragger_1.Dragger();
-            dragger.position = new Vector_12.Vector(box.x, box.y);
+            dragger.position = new Vector_10.Vector(box.x, box.y);
             dragger.width = box.width;
             dragger.height = box.height;
             this.container.append(dragger);
@@ -753,7 +705,7 @@ define("svg/Transformer", ["require", "exports", "euclidean/dim2/Transformation"
             var p0;
             var t0;
             var rotateHandle = new Handle_1.Handle();
-            rotateHandle.position = new Vector_12.Vector(box.x + box.width / 2, box.y - 30);
+            rotateHandle.position = new Vector_10.Vector(box.x + box.width / 2, box.y - 30);
             this.container.append(rotateHandle);
             rotateHandle
                 .onStartDragging(function (p) {
@@ -772,18 +724,18 @@ define("svg/Transformer", ["require", "exports", "euclidean/dim2/Transformation"
             var box = this.target.getBoundingBox();
             var positionGroups = {
                 diagonal: [
-                    new Vector_12.Vector(box.x, box.y),
-                    new Vector_12.Vector(box.x + box.width, box.y),
-                    new Vector_12.Vector(box.x, box.y + box.height),
-                    new Vector_12.Vector(box.x + box.width, box.y + box.height)
+                    new Vector_10.Vector(box.x, box.y),
+                    new Vector_10.Vector(box.x + box.width, box.y),
+                    new Vector_10.Vector(box.x, box.y + box.height),
+                    new Vector_10.Vector(box.x + box.width, box.y + box.height)
                 ],
                 horizontal: [
-                    new Vector_12.Vector(box.x + box.width, box.y + box.height / 2),
-                    new Vector_12.Vector(box.x, box.y + box.height / 2)
+                    new Vector_10.Vector(box.x + box.width, box.y + box.height / 2),
+                    new Vector_10.Vector(box.x, box.y + box.height / 2)
                 ],
                 vertical: [
-                    new Vector_12.Vector(box.x + box.width / 2, box.y),
-                    new Vector_12.Vector(box.x + box.width / 2, box.y + box.height)
+                    new Vector_10.Vector(box.x + box.width / 2, box.y),
+                    new Vector_10.Vector(box.x + box.width / 2, box.y + box.height)
                 ]
             };
             var _loop_1 = function (orientation_1) {
@@ -811,8 +763,8 @@ define("svg/Transformer", ["require", "exports", "euclidean/dim2/Transformation"
                         var norm0 = v0.norm();
                         var norm1 = v1.norm();
                         var scale = norm0 > 0 ? norm1 / norm0 : 1;
-                        var value = new Vector_12.Vector(orientation_1 === "vertical" ? 1 : scale, orientation_1 === "horizontal" ? 1 : scale);
-                        self.container.transformation = new Transformation_4.Transformation()
+                        var value = new Vector_10.Vector(orientation_1 === "vertical" ? 1 : scale, orientation_1 === "horizontal" ? 1 : scale);
+                        self.container.transformation = new Transformation_3.Transformation()
                             .scale(value, { center: center })
                             .transform(t0);
                         self.target.transformation = self.container.transformation;
@@ -830,7 +782,7 @@ define("svg/Transformer", ["require", "exports", "euclidean/dim2/Transformation"
         };
         ElementTransformer.prototype._getCenter = function () {
             var box = this.target.getBoundingBox();
-            return new Vector_12.Vector(box.x + box.width / 2, box.y + box.width / 2);
+            return new Vector_10.Vector(box.x + box.width / 2, box.y + box.width / 2);
         };
         return ElementTransformer;
     }());
@@ -838,9 +790,9 @@ define("svg/Transformer", ["require", "exports", "euclidean/dim2/Transformation"
     function _getAdjacentAngle(p0, p1, p2) {
         var u = p1.subtract(p2);
         var u0 = u.unit();
-        var u1 = new Vector_12.Vector(u0.y, -u0.x);
+        var u1 = new Vector_10.Vector(u0.y, -u0.x);
         var v = p0.subtract(p2);
-        var m = new SquareMatrix_3.SquareMatrix(u0, u1);
+        var m = new SquareMatrix_2.SquareMatrix(u0, u1);
         var w = v.multiply(m.inverse());
         return _getAngle(w);
     }
@@ -865,4 +817,47 @@ define("svg/Transformer", ["require", "exports", "euclidean/dim2/Transformation"
         }
         return ret;
     }
+});
+define("ImageEditor", ["require", "exports"], function (require, exports) {
+    "use strict";
+    return (function () {
+        function ImageEditor() {
+        }
+        return ImageEditor;
+    }());
+});
+define("euclidean/Point", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+});
+define("euclidean/dim2/Line", ["require", "exports", "euclidean/SquareMatrix", "euclidean/dim2/Transformation", "euclidean/dim2/Vector"], function (require, exports, SquareMatrix_3, Transformation_4, Vector_11) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var Line = (function () {
+        function Line(origin, direction) {
+            this.origin = origin;
+            this.direction = direction;
+        }
+        Line.prototype.getParallel = function (p) {
+            return new Line(p, this.direction);
+        };
+        Line.prototype.getPerpendicular = function (p) {
+            return new Line(p, new Vector_11.Vector(-this.direction.y, this.direction.x));
+        };
+        Line.prototype.isParallel = function (l) {
+            var v0 = this.direction;
+            var v1 = l.direction;
+            return v0.x * v1.y === v1.x * v0.y;
+        };
+        Line.prototype.getIntersection = function (l) {
+            var _a = [this.origin, l.origin], p0 = _a[0], p1 = _a[1];
+            var _b = [this.direction, l.direction], v0 = _b[0], v1 = _b[1];
+            var m = new SquareMatrix_3.SquareMatrix(v0, v1.opposite());
+            var v = p1.subtract(p0);
+            var w = v.multiply(m.inverse());
+            return p0.transform(new Transformation_4.Transformation().translate(v0.scale(w.x)));
+        };
+        return Line;
+    }());
+    exports.Line = Line;
 });
