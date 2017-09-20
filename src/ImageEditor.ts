@@ -15,16 +15,20 @@ export = class ImageEditor {
     this._canvas.nativeElement.addEventListener("mousedown", (event) => {
       if (event.target instanceof SVGGraphicsElement) {
         const target = self._getElementContainer(event.target);
+        const container = self._transformer
+          ? self._transformer.container : null;
 
-        // removes the current transformer, if applicable
-        if (self._transformer) {
-          self._transformer.remove();
-        }
-        self._transformer = null;
+        if (!target || !target.isSameNode(container)) {
+          // removes the current transformer, if applicable
+          if (self._transformer) {
+            self._transformer.remove();
+          }
+          self._transformer = null;
 
-        if (target) {
-          self._transformer = new ElementTransformer(
-            new SvgGraphicElement(target));
+          if (target) {
+            self._transformer = new ElementTransformer(
+              new SvgGraphicElement(target));
+          }
         }
       }
     });
