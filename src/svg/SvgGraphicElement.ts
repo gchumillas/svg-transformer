@@ -10,6 +10,7 @@ export class SvgGraphicElement
   private _stopDraggingEventName: string;
   private _isDraggingInit: boolean = false;
   private _isDragging: boolean = false;
+  private _eventListeners: Array<(ev: Event) => any> = [];
 
   constructor(
     target: string | SVGGraphicsElement,
@@ -36,19 +37,21 @@ export class SvgGraphicElement
 
   public onDragging(listener: (p: Point) => void): SvgGraphicElement {
     const self = this;
-
-    if (!this._isDraggingInit) {
-      this._initDragging();
-    }
-
-    document.addEventListener("mousemove", (event) => {
+    const eventListener = (event: MouseEvent) => {
       if (self._isDragging) {
         const t = self._getClientTransformation();
         const p = new Vector(event.clientX, event.clientY).transform(t);
 
         listener.apply(self, [p]);
       }
-    });
+    };
+
+    if (!this._isDraggingInit) {
+      this._initDragging();
+    }
+
+    document.addEventListener("mousemove", eventListener);
+    this._eventListeners.push(eventListener);
 
     return this;
   }
@@ -142,7 +145,13 @@ export class SvgGraphicElement
   }
 
   public remove(): void {
-    this._isDragging = false;
+    const eventNames = ["mousemove", "mouseup", "mouseleave", "blur"];
+    for (const eventName of eventNames) {
+      for (const listener of this._eventListeners) {
+        document.removeEventListener(eventName, listener);
+      }
+    }
+
     super.remove();
   }
 
@@ -177,7 +186,7 @@ export class SvgGraphicElement
     });
 
     for (const eventName of ["mouseup", "mouseleave", "blur"]) {
-      document.addEventListener(eventName, (event) => {
+      const eventListener = (event: Event) => {
         if (self._isDragging) {
           const t = self._getClientTransformation();
           const p = event instanceof MouseEvent
@@ -189,7 +198,10 @@ export class SvgGraphicElement
         }
 
         self._isDragging = false;
-      });
+      };
+
+      document.addEventListener(eventName, eventListener);
+      this._eventListeners.push(eventListener);
     }
 
     this._isDraggingInit = true;
