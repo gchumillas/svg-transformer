@@ -3,7 +3,8 @@
     "defaultSeverity": "error",
     "rules": {
         "max-line-length": [true, 80],
-        "no-console": [false]
+        "no-console": [false],
+        "variable-name": [true, "check-format", "allow-leading-underscore"]
     },
     "extends": "tslint:recommended"
 }

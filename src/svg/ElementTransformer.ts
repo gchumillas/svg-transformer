@@ -11,16 +11,16 @@ import {SvgPath} from "./SvgPath";
 // A decorator class to 'transform' (resize, scale or rotate) an SVG element.
 export class ElementTransformer {
   public readonly target: SvgGraphicElement;
-  private container: SvgGraphicElement;
+  private _container: SvgGraphicElement;
 
   constructor(target: SvgGraphicElement) {
     this.target = target;
 
-    // creates the container group
+    // creates the _container group
     const canvas = this.target.ownerElement;
-    this.container = new SvgGraphicElement("g");
-    this.container.transform(this.target.transformation);
-    canvas.append(this.container);
+    this._container = new SvgGraphicElement("g");
+    this._container.transform(this.target.transformation);
+    canvas.append(this._container);
 
     this._createPath();
     this._createDragger();
@@ -39,7 +39,7 @@ export class ElementTransformer {
       .lineTo(new Vector(box.x + box.width, box.y))
       .lineTo(new Vector(box.x + box.width / 2, box.y));
 
-    this.container.append(path);
+    this._container.append(path);
   }
 
   // The 'dragger' is used to move the image. It consists of a transparent
@@ -55,18 +55,18 @@ export class ElementTransformer {
     dragger.position = new Vector(box.x, box.y);
     dragger.width = box.width;
     dragger.height = box.height;
-    this.container.append(dragger);
+    this._container.append(dragger);
 
     dragger
       .onStartDragging((p) => {
-        t0 = self.container.transformation;
+        t0 = self._container.transformation;
         p0 = p;
       })
       .onDragging((p1) => {
         const v = p1.subtract(p0);
 
-        self.container.transformation = t0.translate(v);
-        self.target.transformation = self.container.transformation;
+        self._container.transformation = t0.translate(v);
+        self.target.transformation = self._container.transformation;
       });
   }
 
@@ -82,21 +82,21 @@ export class ElementTransformer {
     // creates a handle and places it on the top of the transformation tool
     const rotateHandle = new Handle();
     rotateHandle.position = new Vector(box.x + box.width / 2, box.y - 30);
-    this.container.append(rotateHandle);
+    this._container.append(rotateHandle);
 
     rotateHandle
       .onStartDragging((p) => {
         center = self._getCenter();
-        t0 = self.container.transformation;
+        t0 = self._container.transformation;
         p0 = p;
       })
       .onDragging((p1) => {
         const angle = _getAdjacentAngle(p0, p1, center.transform(t0));
 
-        self.container.transformation = t0.rotate(
+        self._container.transformation = t0.rotate(
           angle, {center: center.transform(t0)});
 
-        self.target.transformation = self.container.transformation;
+        self.target.transformation = self._container.transformation;
       });
   }
 
@@ -133,12 +133,12 @@ export class ElementTransformer {
         // creates a handle and places it to the position
         const handle = new Handle();
         handle.position = position;
-        this.container.append(handle);
+        this._container.append(handle);
 
         handle
           .onStartDragging((p) => {
             center = self._getCenter();
-            t0 = self.container.transformation;
+            t0 = self._container.transformation;
             p0 = p;
           })
           .onDragging((p1) => {
@@ -152,10 +152,10 @@ export class ElementTransformer {
               orientation === "vertical" ? 1 : scale,
               orientation === "horizontal" ? 1 : scale);
 
-            self.container.transformation = new Transformation()
+            self._container.transformation = new Transformation()
               .scale(value, {center})
               .transform(t0);
-            self.target.transformation = self.container.transformation;
+            self.target.transformation = self._container.transformation;
           });
       }
     }

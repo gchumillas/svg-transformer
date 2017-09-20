@@ -7,9 +7,9 @@ import {SvgElement} from "./SvgElement";
 export class SvgGraphicElement
   extends SvgElement<SVGGraphicsElement>
   implements ITransformable {
-  private stopDraggingEventName: string;
-  private isDraggingInit: boolean = false;
-  private isDragging: boolean = false;
+  private _stopDraggingEventName: string;
+  private _isDraggingInit: boolean = false;
+  private _isDragging: boolean = false;
 
   constructor(
     target: string | SVGGraphicsElement,
@@ -20,7 +20,7 @@ export class SvgGraphicElement
   public onStartDragging(listener: (init: Point) => void): SvgGraphicElement {
     const self = this;
 
-    if (!this.isDraggingInit) {
+    if (!this._isDraggingInit) {
       this._initDragging();
     }
 
@@ -37,12 +37,12 @@ export class SvgGraphicElement
   public onDragging(listener: (p: Point) => void): SvgGraphicElement {
     const self = this;
 
-    if (!this.isDraggingInit) {
+    if (!this._isDraggingInit) {
       this._initDragging();
     }
 
     document.addEventListener("mousemove", (event) => {
-      if (self.isDragging) {
+      if (self._isDragging) {
         const t = self._getClientTransformation();
         const p = new Vector(event.clientX, event.clientY).transform(t);
 
@@ -56,12 +56,12 @@ export class SvgGraphicElement
   public onStopDragging(listener: (p: Point) => void): SvgGraphicElement {
     const self = this;
 
-    if (!this.isDraggingInit) {
+    if (!this._isDraggingInit) {
       this._initDragging();
     }
 
     this.nativeElement.addEventListener(
-        self.stopDraggingEventName,
+        self._stopDraggingEventName,
         (event: CustomEvent) => listener.apply(self, [event.detail]));
 
     return this;
@@ -165,29 +165,29 @@ export class SvgGraphicElement
   private _initDragging() {
     const self = this;
 
-    this.stopDraggingEventName = `stopdragging_${this._generateId()}`;
+    this._stopDraggingEventName = `stopdragging_${this._generateId()}`;
 
     this.nativeElement.addEventListener("mousedown", (event) => {
-      self.isDragging = true;
+      self._isDragging = true;
     });
 
     for (const eventName of ["mouseup", "mouseleave", "blur"]) {
       document.addEventListener(eventName, (event) => {
-        if (self.isDragging) {
+        if (self._isDragging) {
           const t = self._getClientTransformation();
           const p = event instanceof MouseEvent
             ? new Vector(event.clientX, event.clientY).transform(t)
             : null;
 
           self.nativeElement.dispatchEvent(
-            new CustomEvent(self.stopDraggingEventName, {detail: p}));
+            new CustomEvent(self._stopDraggingEventName, {detail: p}));
         }
 
-        self.isDragging = false;
+        self._isDragging = false;
       });
     }
 
-    this.isDraggingInit = true;
+    this._isDraggingInit = true;
   }
 
   // Gets the center from the parent's reference system.
