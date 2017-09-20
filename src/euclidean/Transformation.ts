@@ -11,14 +11,14 @@ export class Transformation extends SquareMatrix implements ITransformable {
 
     const test1 = vectors
       .slice(-1)
-      .every((vector) => vector.coordinates.slice(-1) === [1]);
+      .every((vector) => vector.coordinates.slice(-1)[0] === 1);
     if (!test1) {
       throw new Error("The last coordinate of the last vector must be 1");
     }
 
     const test2 = vectors
       .slice(0, -1)
-      .every((vector) => vector.coordinates.slice(-1) === [0]);
+      .every((vector) => vector.coordinates.slice(-1)[0] === 0);
     if (!test2) {
       throw new Error("The last coordinate of the first vectors must be 0");
     }
