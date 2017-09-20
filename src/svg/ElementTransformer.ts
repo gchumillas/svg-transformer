@@ -52,7 +52,7 @@ export class ElementTransformer {
   }
 
   private _createPath(): void {
-    const box = this._target.getBoundingBox();
+    const box = this._target.boundingBox;
 
     this._path = new SvgPath()
       .moveTo(new Vector(box.x + box.width / 2, box.y - 30))
@@ -70,7 +70,7 @@ export class ElementTransformer {
   // rectangle placed over the image.
   private _createDragger(): void {
     const self = this;
-    const box = this._target.getBoundingBox();
+    const box = this._target.boundingBox;
     let p0: Point;
     let t0: Transformation;
 
@@ -98,7 +98,7 @@ export class ElementTransformer {
   // the image.
   private _createRotateHandle(): void {
     const self = this;
-    const box = this._target.getBoundingBox();
+    const box = this._target.boundingBox;
     let center: Point;
     let p0: Point;
     let t0: Transformation;
@@ -128,7 +128,7 @@ export class ElementTransformer {
     const self = this;
 
     // calculates the handle positions
-    const box = this._target.getBoundingBox();
+    const box = this._target.boundingBox;
     const positionGroups: {[key: string]: Vector[]} = {
       diagonal: [
         new Vector(box.x, box.y),
@@ -189,7 +189,7 @@ export class ElementTransformer {
   }
 
   private _getCenter(): Point {
-    const box = this._target.getBoundingBox();
+    const box = this._target.boundingBox;
 
     return new Vector(box.x + box.width / 2, box.y + box.width / 2);
   }

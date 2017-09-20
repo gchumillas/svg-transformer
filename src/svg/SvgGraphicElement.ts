@@ -70,6 +70,13 @@ export class SvgGraphicElement
     return this;
   }
 
+  public get boundingBox():
+    {x: number, y: number, width: number, height: number} {
+    const box = this.nativeElement.getBBox();
+
+    return {x: box.x, y: box.y, width: box.width, height: box.height};
+  }
+
   get transformation(): Transformation {
     const style = window.getComputedStyle(this.nativeElement, null);
     const value = style.getPropertyValue("transform");
@@ -106,13 +113,6 @@ export class SvgGraphicElement
     this.transform(new Transformation().translate(value));
 
     return this;
-  }
-
-  public getBoundingBox():
-    {x: number, y: number, width: number, height: number} {
-    const box = this.nativeElement.getBBox();
-
-    return {x: box.x, y: box.y, width: box.width, height: box.height};
   }
 
   public remove(): void {
