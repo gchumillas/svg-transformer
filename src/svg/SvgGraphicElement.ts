@@ -108,35 +108,6 @@ export class SvgGraphicElement
     return this;
   }
 
-  public rotate(angle: number, params?: {center: boolean}): SvgGraphicElement {
-    const center = params !== undefined && params.center
-      ? this._getCenter()
-      : new Vector(0, 0);
-
-    return this.transform(
-      new Transformation().rotate(angle, {center}));
-  }
-
-  public scale(
-    value: number|Vector, params?: {center: boolean}): SvgGraphicElement {
-    const center = params !== undefined && params.center
-      ? this._getCenter()
-      : new Vector(0, 0);
-
-    return this.transform(
-      new Transformation().scale(value, {center}));
-  }
-
-  public skew(
-    value: number|Vector, params?: {center: boolean}): SvgGraphicElement {
-    const center = params !== undefined && params.center
-      ? this._getCenter()
-      : new Vector(0, 0);
-
-    return this.transform(
-      new Transformation().skew(value, {center}));
-  }
-
   public getBoundingBox():
     {x: number, y: number, width: number, height: number} {
     const box = this.nativeElement.getBBox();
@@ -205,14 +176,6 @@ export class SvgGraphicElement
     }
 
     this._isDraggingInit = true;
-  }
-
-  // Gets the center from the parent's reference system.
-  private _getCenter(): Point {
-    const box = this.getBoundingBox();
-    const center = new Vector(box.x + box.width / 2, box.y + box.height / 2);
-
-    return center.transform(this.transformation);
   }
 
   private _getClientTransformation(): Transformation {
