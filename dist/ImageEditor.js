@@ -130,13 +130,13 @@ define("euclidean/Transformation", ["require", "exports", "euclidean/SquareMatri
             var _this = _super.apply(this, vectors) || this;
             var test1 = vectors
                 .slice(-1)
-                .every(function (vector) { return vector.coordinates.slice(-1) === [1]; });
+                .every(function (vector) { return vector.coordinates.slice(-1)[0] === 1; });
             if (!test1) {
                 throw new Error("The last coordinate of the last vector must be 1");
             }
             var test2 = vectors
                 .slice(0, -1)
-                .every(function (vector) { return vector.coordinates.slice(-1) === [0]; });
+                .every(function (vector) { return vector.coordinates.slice(-1)[0] === 0; });
             if (!test2) {
                 throw new Error("The last coordinate of the first vectors must be 0");
             }
@@ -818,11 +818,37 @@ define("svg/ElementTransformer", ["require", "exports", "euclidean/dim2/Transfor
         return ret;
     }
 });
-define("ImageEditor", ["require", "exports"], function (require, exports) {
+define("ImageEditor", ["require", "exports", "svg/ElementTransformer", "svg/SvgGraphicElement"], function (require, exports, ElementTransformer_1, SvgGraphicElement_6) {
     "use strict";
     return (function () {
-        function ImageEditor() {
+        function ImageEditor(svgId) {
+            this.canvas = new SvgGraphicElement_6.SvgGraphicElement(document.querySelector("#" + svgId));
+            var self = this;
+            var nativeCanvas = this.canvas.nativeElement;
+            this.canvas.nativeElement.addEventListener("mousedown", function (event) {
+                if (event.target instanceof SVGGraphicsElement) {
+                    var target = self._getElementContainer(event.target);
+                    if (target !== null) {
+                        var obj = new SvgGraphicElement_6.SvgGraphicElement(target);
+                        var editor = new ElementTransformer_1.ElementTransformer(obj);
+                    }
+                }
+            });
         }
+        ImageEditor.prototype._getElementContainer = function (elem) {
+            var ret = null;
+            if (elem instanceof SVGGraphicsElement) {
+                var root = elem.ownerSVGElement;
+                if (root !== null) {
+                    ret = elem;
+                    if (elem.parentNode instanceof SVGGraphicsElement
+                        && elem.parentNode !== root) {
+                        ret = this._getElementContainer(elem.parentNode);
+                    }
+                }
+            }
+            return ret;
+        };
         return ImageEditor;
     }());
 });

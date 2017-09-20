@@ -6,6 +6,5 @@ require.config({
 });
 
 define(['ImageEditor'], function (ImageEditor) {
-  var editor = new ImageEditor();
-  editor.test();
+  var editor = new ImageEditor('my-canvas');
 });
