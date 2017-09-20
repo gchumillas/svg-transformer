@@ -43,7 +43,7 @@ export class ElementTransformer {
     this._container.remove();
   }
 
-  private _createPath() {
+  private _createPath(): void {
     const box = this.target.getBoundingBox();
 
     this._path = new SvgPath()
@@ -60,7 +60,7 @@ export class ElementTransformer {
 
   // The 'dragger' is used to move the image. It consists of a transparent
   // rectangle placed over the image.
-  private _createDragger() {
+  private _createDragger(): void {
     const self = this;
     const box = this.target.getBoundingBox();
     let p0: Point;
@@ -88,7 +88,7 @@ export class ElementTransformer {
 
   // The 'Rotate handle' is ued to rotate the image. It is placed on the top of
   // the image.
-  private _createRotateHandle() {
+  private _createRotateHandle(): void {
     const self = this;
     const box = this.target.getBoundingBox();
     let center: Point;
@@ -116,7 +116,7 @@ export class ElementTransformer {
       });
   }
 
-  private _createResizeHandles() {
+  private _createResizeHandles(): void {
     const self = this;
 
     // calculates the handle positions

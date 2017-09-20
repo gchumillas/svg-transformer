@@ -23,8 +23,8 @@ export = class ImageEditor {
         self._transformer = null;
 
         if (target) {
-          const obj = new SvgGraphicElement(target);
-          self._transformer = new ElementTransformer(obj);
+          self._transformer = new ElementTransformer(
+            new SvgGraphicElement(target));
         }
       }
     });
