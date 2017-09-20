@@ -68,7 +68,7 @@ export class Transformation extends GeneralTransformation {
       new GeneralVector((1 - xScale) * c.x, (1 - yScale) * c.y, 1)));
   }
 
-  public skew(value: number|Vector, params?: {center: Point}) {
+  public skew(value: number|Vector, params?: {center: Point}): Transformation {
     const xTan = value instanceof Vector ? Math.tan(value.x) : Math.tan(value);
     const yTan = value instanceof Vector ? Math.tan(value.y) : Math.tan(value);
     const c = params !== undefined ? params.center : new Vector(0, 0);

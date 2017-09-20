@@ -7,11 +7,11 @@ export class Vector extends GeneralVector {
     super(x, y);
   }
 
-  get x() {
+  get x(): number {
     return this.coordinates[0];
   }
 
-  get y() {
+  get y(): number {
     return this.coordinates[1];
   }
 

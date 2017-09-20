@@ -176,7 +176,7 @@ export class SvgGraphicElement
   }
 
   // Initializes the dragging
-  private _initDragging() {
+  private _initDragging(): void {
     const self = this;
 
     this._stopDraggingEventName = `stopdragging_${this._generateId()}`;
