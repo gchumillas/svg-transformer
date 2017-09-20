@@ -32,6 +32,14 @@ export class ElementTransformer {
     this._createResizeHandles();
   }
 
+  get target(): SVGGraphicsElement {
+    return this._target.nativeElement;
+  }
+
+  get container(): SVGGraphicsElement {
+    return this._container.nativeElement;
+  }
+
   public remove(): void {
     for (const handle of this._handles) {
       handle.remove();
