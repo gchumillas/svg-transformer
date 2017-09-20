@@ -3,15 +3,15 @@ import {ElementTransformer} from "./svg/ElementTransformer";
 import {SvgGraphicElement} from "./svg/SvgGraphicElement";
 
 export = class ImageEditor {
-  private canvas: SvgGraphicElement;
+  private _canvas: SvgGraphicElement;
 
   constructor(svgId: string) {
-    this.canvas = new SvgGraphicElement(
+    this._canvas = new SvgGraphicElement(
       document.querySelector(`#${svgId}`) as SVGSVGElement);
 
     const self = this;
-    const nativeCanvas = this.canvas.nativeElement;
-    this.canvas.nativeElement.addEventListener("mousedown", (event) => {
+    const nativeCanvas = this._canvas.nativeElement;
+    this._canvas.nativeElement.addEventListener("mousedown", (event) => {
       if (event.target instanceof SVGGraphicsElement) {
         const target = self._getElementContainer(event.target);
 
