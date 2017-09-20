@@ -141,6 +141,11 @@ export class SvgGraphicElement
     return {x: box.x, y: box.y, width: box.width, height: box.height};
   }
 
+  public remove(): void {
+    this._isDragging = false;
+    super.remove();
+  }
+
   // Generates a random ID.
   //
   // Thanks to: https://stackoverflow.com/a/105074/1704895

@@ -41,4 +41,8 @@ export class SvgElement<Type extends SVGElement> {
   public append(element: SvgElement<SVGElement>): void {
     this.nativeElement.appendChild(element.nativeElement);
   }
+
+  public remove(): void {
+    this.nativeElement.remove();
+  }
 }

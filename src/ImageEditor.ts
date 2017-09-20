@@ -4,6 +4,7 @@ import {SvgGraphicElement} from "./svg/SvgGraphicElement";
 
 export = class ImageEditor {
   private _canvas: SvgGraphicElement;
+  private _transformer: ElementTransformer;
 
   constructor(svgId: string) {
     this._canvas = new SvgGraphicElement(
@@ -15,9 +16,15 @@ export = class ImageEditor {
       if (event.target instanceof SVGGraphicsElement) {
         const target = self._getElementContainer(event.target);
 
-        if (target !== null) {
+        // removes the current transformer, if applicable
+        if (self._transformer) {
+          self._transformer.remove();
+        }
+        self._transformer = null;
+
+        if (target) {
           const obj = new SvgGraphicElement(target);
-          const editor = new ElementTransformer(obj);
+          self._transformer = new ElementTransformer(obj);
         }
       }
     });
@@ -29,7 +36,7 @@ export = class ImageEditor {
     if (elem instanceof SVGGraphicsElement) {
       const root = elem.ownerSVGElement;
 
-      if (root !== null) {
+      if (root) {
         ret = elem;
         if (elem.parentNode instanceof SVGGraphicsElement
           && elem.parentNode !== root) {

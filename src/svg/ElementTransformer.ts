@@ -28,6 +28,10 @@ export class ElementTransformer {
     this._createResizeHandles();
   }
 
+  public remove(): void {
+    this._container.remove();
+  }
+
   private _createPath() {
     const box = this.target.getBoundingBox();
     const path = new SvgPath()
