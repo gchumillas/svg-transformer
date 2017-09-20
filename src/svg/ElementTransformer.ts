@@ -10,20 +10,20 @@ import {SvgPath} from "./SvgPath";
 
 // A decorator class to 'transform' (resize, scale or rotate) an SVG element.
 export class ElementTransformer {
-  public readonly target: SvgGraphicElement;
+  private _target: SvgGraphicElement;
   private _container: SvgGraphicElement;
   private _path: SvgGraphicElement;
   private _dragger: Dragger;
   private _rotateHandle: Handle;
   private _handles: Handle[];
 
-  constructor(target: SvgGraphicElement) {
-    this.target = target;
+  constructor(_target: SvgGraphicElement) {
+    this._target = _target;
 
     // creates the _container group
-    const canvas = this.target.ownerElement;
+    const canvas = this._target.ownerElement;
     this._container = new SvgGraphicElement("g");
-    this._container.transform(this.target.transformation);
+    this._container.transform(this._target.transformation);
     canvas.append(this._container);
 
     this._createPath();
@@ -44,7 +44,7 @@ export class ElementTransformer {
   }
 
   private _createPath(): void {
-    const box = this.target.getBoundingBox();
+    const box = this._target.getBoundingBox();
 
     this._path = new SvgPath()
       .moveTo(new Vector(box.x + box.width / 2, box.y - 30))
@@ -62,7 +62,7 @@ export class ElementTransformer {
   // rectangle placed over the image.
   private _createDragger(): void {
     const self = this;
-    const box = this.target.getBoundingBox();
+    const box = this._target.getBoundingBox();
     let p0: Point;
     let t0: Transformation;
 
@@ -82,7 +82,7 @@ export class ElementTransformer {
         const v = p1.subtract(p0);
 
         self._container.transformation = t0.translate(v);
-        self.target.transformation = self._container.transformation;
+        self._target.transformation = self._container.transformation;
       });
   }
 
@@ -90,7 +90,7 @@ export class ElementTransformer {
   // the image.
   private _createRotateHandle(): void {
     const self = this;
-    const box = this.target.getBoundingBox();
+    const box = this._target.getBoundingBox();
     let center: Point;
     let p0: Point;
     let t0: Transformation;
@@ -112,7 +112,7 @@ export class ElementTransformer {
         self._container.transformation = t0.rotate(
           angle, {center: center.transform(t0)});
 
-        self.target.transformation = self._container.transformation;
+        self._target.transformation = self._container.transformation;
       });
   }
 
@@ -120,7 +120,7 @@ export class ElementTransformer {
     const self = this;
 
     // calculates the handle positions
-    const box = this.target.getBoundingBox();
+    const box = this._target.getBoundingBox();
     const positionGroups: {[key: string]: Vector[]} = {
       diagonal: [
         new Vector(box.x, box.y),
@@ -172,7 +172,7 @@ export class ElementTransformer {
             self._container.transformation = new Transformation()
               .scale(value, {center})
               .transform(t0);
-            self.target.transformation = self._container.transformation;
+            self._target.transformation = self._container.transformation;
           });
 
         this._handles.push(handle);
@@ -181,7 +181,7 @@ export class ElementTransformer {
   }
 
   private _getCenter(): Point {
-    const box = this.target.getBoundingBox();
+    const box = this._target.getBoundingBox();
 
     return new Vector(box.x + box.width / 2, box.y + box.width / 2);
   }
