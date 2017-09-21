@@ -115,11 +115,13 @@ export class ElementTransformer {
         p0 = p;
       })
       .onDragging((p1) => {
-        const angle = _getAdjacentAngle(p0, p1, center.transform(t0));
+        const c = center.transform(t0);
+        const angle = _getAdjacentAngle(p0, p1, c);
 
-        self._container.transformation = t0.rotate(
-          angle, {center: center.transform(t0)});
-
+        self._container.transformation = t0
+          .translate(c.opposite())
+          .rotate(angle)
+          .translate(c);
         self._target.transformation = self._container.transformation;
       });
   }
@@ -178,7 +180,9 @@ export class ElementTransformer {
               orientation === "horizontal" ? 1 : scale);
 
             self._container.transformation = new Transformation()
-              .scale(value, {center})
+              .translate(center.opposite())
+              .scale(value)
+              .translate(center)
               .transform(t0);
             self._target.transformation = self._container.transformation;
           });

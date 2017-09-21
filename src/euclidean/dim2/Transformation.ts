@@ -43,40 +43,35 @@ export class Transformation extends GeneralTransformation {
       new GeneralVector(v.x, v.y, 1)));
   }
 
-  public rotate(angle: number, params?: {center: Point}): Transformation {
+  public rotate(angle: number): Transformation {
     const ret: Transformation = null;
     const cos = Math.cos(angle);
     const sin = Math.sin(angle);
-    const c = params !== undefined ? params.center : new Vector(0, 0);
 
     return this.transform(new Transformation(
       new GeneralVector(cos, sin, 0),
       new GeneralVector(-sin, cos, 0),
-      new GeneralVector(
-        (1 - cos) * c.x + sin * c.y, (1 - cos) * c.y - sin * c.x, 1)));
+      new GeneralVector(0, 0, 1)));
   }
 
-  public scale(
-    value: number|Vector, params?: {center: Point}): Transformation {
+  public scale(value: number|Vector): Transformation {
     const xScale = value instanceof Vector ? value.x : value;
     const yScale = value instanceof Vector ? value.y : value;
-    const c = params !== undefined ? params.center : new Vector(0, 0);
 
     return this.transform(new Transformation(
       new GeneralVector(xScale, 0, 0),
       new GeneralVector(0, yScale, 0),
-      new GeneralVector((1 - xScale) * c.x, (1 - yScale) * c.y, 1)));
+      new GeneralVector(0, 0, 1)));
   }
 
-  public skew(value: number|Vector, params?: {center: Point}): Transformation {
+  public skew(value: number|Vector): Transformation {
     const xTan = value instanceof Vector ? Math.tan(value.x) : Math.tan(value);
     const yTan = value instanceof Vector ? Math.tan(value.y) : Math.tan(value);
-    const c = params !== undefined ? params.center : new Vector(0, 0);
 
     return this.transform(new Transformation(
       new GeneralVector(1, yTan, 0),
       new GeneralVector(xTan, 1, 0),
-      new GeneralVector(-xTan * c.y, -yTan * c.x, 1)));
+      new GeneralVector(0, 0, 1)));
   }
 
   public toString(): string {
