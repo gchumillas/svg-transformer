@@ -109,12 +109,6 @@ export class SvgGraphicElement
     return this;
   }
 
-  public translate(value: Vector): SvgGraphicElement {
-    this.transform(new Transformation().translate(value));
-
-    return this;
-  }
-
   public remove(): void {
     const eventNames = ["mousemove", "mouseup", "mouseleave", "blur"];
     for (const eventName of eventNames) {
