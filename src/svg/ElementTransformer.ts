@@ -118,6 +118,7 @@ export class ElementTransformer {
         const c = center.transform(t0);
         const angle = _getAdjacentAngle(p0, p1, c);
 
+        // TODO: self._container.rotation = angle;
         self._container.transformation = t0
           .translate(c.opposite())
           .rotate(angle)
@@ -179,6 +180,7 @@ export class ElementTransformer {
               orientation === "vertical" ? 1 : scale,
               orientation === "horizontal" ? 1 : scale);
 
+            // TODO: self._container.scale = value;
             self._container.transformation = new Transformation()
               .translate(center.opposite())
               .scale(value)
