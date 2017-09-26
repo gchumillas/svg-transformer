@@ -77,6 +77,7 @@ export class SvgGraphicElement
     return {x: box.x, y: box.y, width: box.width, height: box.height};
   }
 
+  // TODO: is there a way to get the current transformation more accurately?
   get transformation(): Transformation {
     const style = window.getComputedStyle(this.nativeElement, null);
     const value = style.getPropertyValue("transform");
