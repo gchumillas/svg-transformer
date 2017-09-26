@@ -18,6 +18,16 @@ export class SvgGraphicElement
     super(target, attributes);
   }
 
+  get rotate(): number {
+    const {c, d} = this._getTransformValues();
+
+    return Math.atan2(d, c) - Math.PI / 2;
+  }
+
+  set rotate(value: number) {
+    this.transform(new Transformation().rotate(value));
+  }
+
   public onStartDragging(listener: (init: Point) => void): SvgGraphicElement {
     const self = this;
 
@@ -179,5 +189,19 @@ export class SvgGraphicElement
 
     return Transformation.createFromValues(
       ctm.a, ctm.b, ctm.c, ctm.d, ctm.e, ctm.f).inverse();
+  }
+
+  private _getTransformValues(): {
+    a: number, b: number, c: number, d: number, e: number, f: number} {
+    const t = this.transformation;
+    const [v0, v1, v2] = t.vectors;
+    const a = v0.coordinates[0];
+    const b = v0.coordinates[1];
+    const c = v1.coordinates[0];
+    const d = v1.coordinates[1];
+    const e = v2.coordinates[0];
+    const f = v2.coordinates[1];
+
+    return {a, b, c, d, e, f};
   }
 }
