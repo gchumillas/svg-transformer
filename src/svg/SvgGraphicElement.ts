@@ -89,18 +89,13 @@ export class SvgGraphicElement
 
   // TODO: is there a way to get the current transformation more accurately?
   get transformation(): Transformation {
-    const style = window.getComputedStyle(this.nativeElement, null);
-    const value = style.getPropertyValue("transform");
-    const matches = value.match(
-      /^matrix\(([^,]+),([^,]+),([^,]+),([^,]+),([^,]+),([^,]+)\)$/);
     let ret = new Transformation();
+    const t = this.nativeElement.transform.baseVal.consolidate();
 
-    if (matches !== null) {
-      const [a, b, c, d, e, f] = matches
-        .filter((elem, index) => index > 0)
-        .map((match) => parseFloat(match));
+    if (t !== undefined && t !== null) {
+      const m = t.matrix;
 
-      ret = Transformation.createFromValues(a, b, c, d, e, f);
+      ret = Transformation.createFromValues(m.a, m.b, m.c, m.d, m.e, m.f);
     }
 
     return ret;
