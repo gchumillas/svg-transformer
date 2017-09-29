@@ -80,6 +80,7 @@ export class SvgGraphicElement
     return this;
   }
 
+  // TODO: move this getter to the beggining
   public get boundingBox():
     {x: number, y: number, width: number, height: number} {
     const box = this.nativeElement.getBBox();
@@ -87,7 +88,6 @@ export class SvgGraphicElement
     return {x: box.x, y: box.y, width: box.width, height: box.height};
   }
 
-  // TODO: is there a way to get the current transformation more accurately?
   get transformation(): Transformation {
     let ret = new Transformation();
     const t = this.nativeElement.transform.baseVal.consolidate();
