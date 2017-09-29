@@ -25,16 +25,6 @@ export class SvgGraphicElement
     return {x: box.x, y: box.y, width: box.width, height: box.height};
   }
 
-  get rotate(): number {
-    const {c, d} = this._getTransformValues();
-
-    return Math.atan2(d, c) - Math.PI / 2;
-  }
-
-  set rotate(value: number) {
-    this.transform(new Transformation().rotate(value));
-  }
-
   public onStartDragging(listener: (init: Point) => void): SvgGraphicElement {
     const self = this;
 
