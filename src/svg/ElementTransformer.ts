@@ -65,23 +65,31 @@ export class ElementTransformer {
   }
 
   private _update(): void {
-    const targetTransformation = this._target.transformation;
     const box = this._target.boundingBox;
-    const topLeftPoint = new Vector(box.x, box.y)
-      .transform(targetTransformation);
-    const bottomRightPoint = new Vector(box.x + box.width, box.y + box.height)
-      .transform(targetTransformation);
+    const t = this._target.transformation;
+
+    // points of reference
+    const p0 = new Vector(box.x + box.width / 2, box.y - 30).transform(t);
+    const p1 = new Vector(box.x + box.width / 2, box.y).transform(t);
+    const p2 = new Vector(box.x, box.y).transform(t);
+    const p3 = new Vector(box.x, box.y + box.height).transform(t);
+    const p4 = new Vector(box.x + box.width, box.y + box.height).transform(t);
+    const p5 = new Vector(box.x + box.width, box.y).transform(t);
 
     // redraws the path
-    this._path.transformation = targetTransformation;
+    this._path.remove();
+    this._path = new SvgPath()
+      .moveTo(p0)
+      .lineTo(p1).lineTo(p2).lineTo(p3).lineTo(p4).lineTo(p5).lineTo(p1);
+    this._container.append(this._path);
 
     // the dragger covers the whole target
-    this._dragger.position = new Vector(box.x, box.y);
-    this._dragger.transformation = targetTransformation;
+    // this._dragger.position = new Vector(box.x, box.y);
+    // this._dragger.transformation = targetTransformation;
 
     // places rotate handle
     this._rotateHandle.position = new Vector(box.x + box.width / 2, box.y - 30)
-      .transform(targetTransformation);
+      .transform(t);
 
     // places scale handles
     const orientations: {[key: string]: Vector[]} = {
@@ -111,7 +119,7 @@ export class ElementTransformer {
         const position = positions[i];
         const handle = handles[i];
 
-        handle.position = position.transform(targetTransformation);
+        handle.position = position.transform(t);
       }
     }
   }
