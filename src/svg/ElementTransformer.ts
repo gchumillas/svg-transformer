@@ -68,6 +68,8 @@ export class ElementTransformer {
     const box = this._target.boundingBox;
     const t = this._target.transformation;
 
+    this._dragger.transformation = this._target.transformation;
+
     // redraws the path
     this._path.remove();
     this._createPath();
