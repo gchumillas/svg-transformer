@@ -18,6 +18,13 @@ export class SvgGraphicElement
     super(target, attributes);
   }
 
+  public get boundingBox():
+    {x: number, y: number, width: number, height: number} {
+    const box = this.nativeElement.getBBox();
+
+    return {x: box.x, y: box.y, width: box.width, height: box.height};
+  }
+
   get rotate(): number {
     const {c, d} = this._getTransformValues();
 
@@ -78,14 +85,6 @@ export class SvgGraphicElement
         (event: CustomEvent) => listener.apply(self, [event.detail]));
 
     return this;
-  }
-
-  // TODO: move this getter to the beggining
-  public get boundingBox():
-    {x: number, y: number, width: number, height: number} {
-    const box = this.nativeElement.getBBox();
-
-    return {x: box.x, y: box.y, width: box.width, height: box.height};
   }
 
   get transformation(): Transformation {
