@@ -68,20 +68,9 @@ export class ElementTransformer {
     const box = this._target.boundingBox;
     const t = this._target.transformation;
 
-    // points of reference
-    const p0 = new Vector(box.x + box.width / 2, box.y - 30).transform(t);
-    const p1 = new Vector(box.x + box.width / 2, box.y).transform(t);
-    const p2 = new Vector(box.x, box.y).transform(t);
-    const p3 = new Vector(box.x, box.y + box.height).transform(t);
-    const p4 = new Vector(box.x + box.width, box.y + box.height).transform(t);
-    const p5 = new Vector(box.x + box.width, box.y).transform(t);
-
     // redraws the path
     this._path.remove();
-    this._path = new SvgPath()
-      .moveTo(p0)
-      .lineTo(p1).lineTo(p2).lineTo(p3).lineTo(p4).lineTo(p5).lineTo(p1);
-    this._container.prepend(this._path);
+    this._createPath();
 
     // places rotate handle
     this._rotateHandle.position = new Vector(box.x + box.width / 2, box.y - 30)
@@ -122,17 +111,21 @@ export class ElementTransformer {
 
   private _createPath(): void {
     const box = this._target.boundingBox;
+    const t = this._target.transformation;
 
+    // points of reference
+    const p0 = new Vector(box.x + box.width / 2, box.y - 30).transform(t);
+    const p1 = new Vector(box.x + box.width / 2, box.y).transform(t);
+    const p2 = new Vector(box.x, box.y).transform(t);
+    const p3 = new Vector(box.x, box.y + box.height).transform(t);
+    const p4 = new Vector(box.x + box.width, box.y + box.height).transform(t);
+    const p5 = new Vector(box.x + box.width, box.y).transform(t);
+
+    // redraws the path
     this._path = new SvgPath()
-      .moveTo(new Vector(box.x + box.width / 2, box.y - 30))
-      .lineTo(new Vector(box.x + box.width / 2, box.y))
-      .lineTo(new Vector(box.x, box.y))
-      .lineTo(new Vector(box.x, box.y + box.height))
-      .lineTo(new Vector(box.x + box.width, box.y + box.height))
-      .lineTo(new Vector(box.x + box.width, box.y))
-      .lineTo(new Vector(box.x + box.width / 2, box.y));
-
-    this._container.append(this._path);
+      .moveTo(p0)
+      .lineTo(p1).lineTo(p2).lineTo(p3).lineTo(p4).lineTo(p5).lineTo(p1);
+    this._container.prepend(this._path);
   }
 
   // The 'dragger' is used to move the image. It consists of a transparent
