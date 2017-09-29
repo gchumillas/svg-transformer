@@ -38,6 +38,15 @@ export class SvgElement<Type extends SVGElement> {
     return this;
   }
 
+  public prepend(element: SvgElement<SVGElement>): void {
+    const firstChild = this.nativeElement.firstChild;
+    if (firstChild) {
+      this.nativeElement.insertBefore(element.nativeElement, firstChild);
+    } else {
+      this.append(element);
+    }
+  }
+
   public append(element: SvgElement<SVGElement>): void {
     this.nativeElement.appendChild(element.nativeElement);
   }

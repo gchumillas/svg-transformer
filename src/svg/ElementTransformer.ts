@@ -81,11 +81,7 @@ export class ElementTransformer {
     this._path = new SvgPath()
       .moveTo(p0)
       .lineTo(p1).lineTo(p2).lineTo(p3).lineTo(p4).lineTo(p5).lineTo(p1);
-    this._container.append(this._path);
-
-    // the dragger covers the whole target
-    // this._dragger.position = new Vector(box.x, box.y);
-    // this._dragger.transformation = targetTransformation;
+    this._container.prepend(this._path);
 
     // places rotate handle
     this._rotateHandle.position = new Vector(box.x + box.width / 2, box.y - 30)
