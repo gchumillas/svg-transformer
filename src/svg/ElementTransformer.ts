@@ -48,7 +48,6 @@ export class ElementTransformer {
   }
 
   // TODO: should there be a method called show()
-  // TODO: rename remove() by hide()
   // TODO: isVisible = true
   public hide(): void {
     // removes scale handles
