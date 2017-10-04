@@ -75,7 +75,6 @@ export class ElementTransformer {
 
   private _create(): void {
     this._container = new SvgGraphicElement("g");
-    // TODO: replace this by this._container.ownerElement
     this._canvas.append(this._container);
 
     // this._createPath();
