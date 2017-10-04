@@ -29,9 +29,8 @@ export class ElementTransformer {
     this._canvas = this._elements[0].ownerElement;
   }
 
-  // TODO: replace by elements()
-  get target(): SVGGraphicsElement {
-    return this._elements[0].nativeElement;
+  get elements(): SVGGraphicsElement[] {
+    return this._elements.map((value) => value.nativeElement);
   }
 
   get container(): SVGGraphicsElement {
