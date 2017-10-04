@@ -18,7 +18,6 @@ export = class ImageEditor {
     }
     const t = new ElementTransformer(targets);
 
-    /*
     const self = this;
     const nativeCanvas = this._canvas.nativeElement;
     this._canvas.nativeElement.addEventListener("mousedown", (event) => {
@@ -30,7 +29,7 @@ export = class ImageEditor {
         if (!target || !target.isSameNode(container)) {
           // removes the current transformer, if applicable
           if (self._transformer) {
-            self._transformer.remove();
+            self._transformer.hide();
           }
           self._transformer = null;
 
@@ -39,7 +38,7 @@ export = class ImageEditor {
           }
         }
       }
-    });*/
+    });
   }
 
   public _getElementContainer(elem: SVGGraphicsElement): SVGGraphicsElement {

@@ -50,7 +50,7 @@ export class ElementTransformer {
   // TODO: should there be a method called show()
   // TODO: rename remove() by hide()
   // TODO: isVisible = true
-  public remove(): void {
+  public hide(): void {
     // removes scale handles
     for (const orientation in this._scaleHandles) {
       if (!this._scaleHandles.hasOwnProperty(orientation)) {
