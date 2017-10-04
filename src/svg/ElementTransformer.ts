@@ -23,7 +23,6 @@ export class ElementTransformer {
     horizontal: Handle[],
     vertical: Handle[]};
 
-  // TODO: Replace SvgGraphicElement by SVGGraphicsElement
   constructor(_elements: SVGGraphicsElement[]) {
     this._isVisible = false;
     this._elements = _elements.map((elem) => new SvgGraphicElement(elem));
