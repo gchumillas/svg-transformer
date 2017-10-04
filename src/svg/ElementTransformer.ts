@@ -30,7 +30,7 @@ export class ElementTransformer {
     this._container = new SvgGraphicElement("g");
     this._canvas.append(this._container);
 
-    this._createPath();
+    // this._createPath();
     this._createDragger();
     this._createRotateHandle();
     this._createResizeHandles();
@@ -58,7 +58,7 @@ export class ElementTransformer {
       }
     }
 
-    this._path.remove();
+    // this._path.remove();
     this._dragger.remove();
     this._rotateHandle.remove();
     this._container.remove();
@@ -71,8 +71,8 @@ export class ElementTransformer {
     this._dragger.transformation = this._target.transformation;
 
     // redraws the path
-    this._path.remove();
-    this._createPath();
+    // this._path.remove();
+    // this._createPath();
 
     // places rotate handle
     this._rotateHandle.position = new Vector(box.x + box.width / 2, box.y - 30)
