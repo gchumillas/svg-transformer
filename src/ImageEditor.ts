@@ -17,7 +17,7 @@ export = class ImageEditor {
       targets.push(elements[i] as SVGGraphicsElement);
     }
     const t = new ElementTransformer(targets);
-    t.show();
+    t.isVisible = true;
 
     /*
     const self = this;

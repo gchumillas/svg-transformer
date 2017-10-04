@@ -39,6 +39,24 @@ export class ElementTransformer {
     return this._container.nativeElement;
   }
 
+  get isVisible(): boolean {
+    return this._isVisible;
+  }
+
+  set isVisible(value: boolean) {
+    if (this._isVisible === value) {
+      return;
+    }
+
+    if (value) {
+      this._create();
+    } else if (this._isVisible) {
+      this._destroy();
+    }
+
+    this._isVisible = value;
+  }
+
   public show(): void {
     if (this._isVisible) {
       return;
