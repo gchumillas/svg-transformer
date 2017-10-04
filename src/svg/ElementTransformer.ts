@@ -23,8 +23,8 @@ export class ElementTransformer {
     vertical: Handle[]};
 
   // TODO: Replace SvgGraphicElement by SVGGraphicsElement
-  constructor(_target: SVGGraphicsElement) {
-    this._targets = [new SvgGraphicElement(_target)];
+  constructor(_targets: SVGGraphicsElement[]) {
+    this._targets = _targets.map((elem) => new SvgGraphicElement(elem));
     this._canvas = this._targets[0].ownerElement;
 
     // creates the _container group
@@ -46,6 +46,9 @@ export class ElementTransformer {
     return this._container.nativeElement;
   }
 
+  // TODO: should there be a method called show()
+  // TODO: rename remove() by hide()
+  // TODO: isVisible = true
   public remove(): void {
     // removes scale handles
     for (const orientation in this._scaleHandles) {
