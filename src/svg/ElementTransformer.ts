@@ -11,6 +11,7 @@ import {SvgPath} from "./SvgPath";
 // A decorator class to 'transform' (resize, scale or rotate) an SVG element.
 export class ElementTransformer {
   private _canvas: SvgGraphicElement;
+  private _isVisible: boolean;
   private _elements: SvgGraphicElement[];
   private _container: SvgGraphicElement;
   private _path: SvgGraphicElement;
@@ -24,12 +25,9 @@ export class ElementTransformer {
 
   // TODO: Replace SvgGraphicElement by SVGGraphicsElement
   constructor(_elements: SVGGraphicsElement[]) {
+    this._isVisible = false;
     this._elements = _elements.map((elem) => new SvgGraphicElement(elem));
     this._canvas = this._elements[0].ownerElement;
-
-    // creates the _container group
-    this._container = new SvgGraphicElement("g");
-    this._canvas.append(this._container);
   }
 
   // TODO: replace by elements()
@@ -42,6 +40,28 @@ export class ElementTransformer {
   }
 
   public show(): void {
+    if (this._isVisible) {
+      return;
+    }
+
+    this._create();
+    this._isVisible = true;
+  }
+
+  public hide(): void {
+    if (!this._isVisible) {
+      return;
+    }
+
+    this._destroy();
+    this._isVisible = false;
+  }
+
+  private _create(): void {
+    this._container = new SvgGraphicElement("g");
+    // TODO: replace this by this._container.ownerElement
+    this._canvas.append(this._container);
+
     // this._createPath();
     this._createDragger();
     this._createRotateHandle();
@@ -49,9 +69,7 @@ export class ElementTransformer {
     this._update();
   }
 
-  // TODO: should there be a method called show()
-  // TODO: isVisible = true
-  public hide(): void {
+  private _destroy(): void {
     // removes scale handles
     for (const orientation in this._scaleHandles) {
       if (!this._scaleHandles.hasOwnProperty(orientation)) {
