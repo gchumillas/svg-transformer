@@ -22,6 +22,7 @@ export class ElementTransformer {
     horizontal: Handle[],
     vertical: Handle[]};
 
+  // TODO: Replace SvgGraphicElement by SVGGraphicsElement
   constructor(_target: SvgGraphicElement) {
     this._targets = [_target];
     this._canvas = this._targets[0].ownerElement;
