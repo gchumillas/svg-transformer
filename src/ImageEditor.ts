@@ -10,6 +10,7 @@ export = class ImageEditor {
     this._canvas = new SvgGraphicElement(
       document.querySelector(`#${svgId}`) as SVGSVGElement);
 
+    /*
     const self = this;
     const nativeCanvas = this._canvas.nativeElement;
     this._canvas.nativeElement.addEventListener("mousedown", (event) => {
@@ -31,7 +32,7 @@ export = class ImageEditor {
           }
         }
       }
-    });
+    });*/
   }
 
   public _getElementContainer(elem: SVGGraphicsElement): SVGGraphicsElement {

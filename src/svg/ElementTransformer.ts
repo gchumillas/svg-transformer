@@ -11,7 +11,7 @@ import {SvgPath} from "./SvgPath";
 // A decorator class to 'transform' (resize, scale or rotate) an SVG element.
 export class ElementTransformer {
   private _canvas: SvgGraphicElement;
-  private _target: SvgGraphicElement;
+  private _targets: SvgGraphicElement[];
   private _container: SvgGraphicElement;
   private _path: SvgGraphicElement;
   private _dragger: Dragger;
@@ -23,8 +23,8 @@ export class ElementTransformer {
     vertical: Handle[]};
 
   constructor(_target: SvgGraphicElement) {
-    this._target = _target;
-    this._canvas = this._target.ownerElement;
+    this._targets = [_target];
+    this._canvas = this._targets[0].ownerElement;
 
     // creates the _container group
     this._container = new SvgGraphicElement("g");
@@ -38,7 +38,7 @@ export class ElementTransformer {
   }
 
   get target(): SVGGraphicsElement {
-    return this._target.nativeElement;
+    return this._targets[0].nativeElement;
   }
 
   get container(): SVGGraphicsElement {
@@ -65,10 +65,10 @@ export class ElementTransformer {
   }
 
   private _update(): void {
-    const box = this._target.boundingBox;
-    const t = this._target.transformation;
+    const box = this._targets[0].boundingBox;
+    const t = this._targets[0].transformation;
 
-    this._dragger.transformation = this._target.transformation;
+    this._dragger.transformation = this._targets[0].transformation;
 
     // redraws the path
     // this._path.remove();
@@ -112,8 +112,8 @@ export class ElementTransformer {
   }
 
   private _createPath(): void {
-    const box = this._target.boundingBox;
-    const t = this._target.transformation;
+    const box = this._targets[0].boundingBox;
+    const t = this._targets[0].transformation;
 
     // points of reference
     const p0 = new Vector(box.x + box.width / 2, box.y - 30).transform(t);
@@ -134,7 +134,7 @@ export class ElementTransformer {
   // rectangle placed over the image.
   private _createDragger(): void {
     const self = this;
-    const box = this._target.boundingBox;
+    const box = this._targets[0].boundingBox;
     let p0: Point;
     let t0: Transformation;
 
@@ -147,13 +147,13 @@ export class ElementTransformer {
 
     this._dragger
       .onStartDragging((p) => {
-        t0 = self._target.transformation;
+        t0 = self._targets[0].transformation;
         p0 = p;
       })
       .onDragging((p1) => {
         const v = p1.subtract(p0);
 
-        self._target.transformation = t0.translate(v);
+        self._targets[0].transformation = t0.translate(v);
         self._update();
       });
   }
@@ -173,14 +173,14 @@ export class ElementTransformer {
     this._rotateHandle
       .onStartDragging((p) => {
         center = self._getCenter();
-        t0 = self._target.transformation;
+        t0 = self._targets[0].transformation;
         p0 = p;
       })
       .onDragging((p1) => {
         const c = center.transform(t0);
         const angle = _getAdjacentAngle(p0, p1, c);
 
-        self._target.transformation = t0
+        self._targets[0].transformation = t0
           .translate(c.opposite())
           .rotate(angle)
           .translate(c);
@@ -192,7 +192,7 @@ export class ElementTransformer {
     const self = this;
 
     // calculates the handle positions
-    const box = this._target.boundingBox;
+    const box = this._targets[0].boundingBox;
     const positionGroups: {[key: string]: Vector[]} = {
       diagonal: [
         new Vector(box.x, box.y),
@@ -224,7 +224,7 @@ export class ElementTransformer {
         handle
           .onStartDragging((p) => {
             center = self._getCenter();
-            t0 = self._target.transformation;
+            t0 = self._targets[0].transformation;
             p0 = p;
           })
           .onDragging((p1) => {
@@ -238,7 +238,7 @@ export class ElementTransformer {
               orientation === "vertical" ? 1 : scale,
               orientation === "horizontal" ? 1 : scale);
 
-            self._target.transformation = new Transformation()
+            self._targets[0].transformation = new Transformation()
               .translate(center.opposite())
               .scale(value)
               .translate(center)
@@ -253,7 +253,7 @@ export class ElementTransformer {
   }
 
   private _getCenter(): Point {
-    const box = this._target.boundingBox;
+    const box = this._targets[0].boundingBox;
 
     return new Vector(box.x + box.width / 2, box.y + box.width / 2);
   }
