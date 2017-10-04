@@ -30,12 +30,6 @@ export class ElementTransformer {
     // creates the _container group
     this._container = new SvgGraphicElement("g");
     this._canvas.append(this._container);
-
-    // this._createPath();
-    this._createDragger();
-    this._createRotateHandle();
-    this._createResizeHandles();
-    this._update();
   }
 
   // TODO: replace by elements()
@@ -45,6 +39,14 @@ export class ElementTransformer {
 
   get container(): SVGGraphicsElement {
     return this._container.nativeElement;
+  }
+
+  public show(): void {
+    // this._createPath();
+    this._createDragger();
+    this._createRotateHandle();
+    this._createResizeHandles();
+    this._update();
   }
 
   // TODO: should there be a method called show()

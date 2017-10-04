@@ -17,7 +17,9 @@ export = class ImageEditor {
       targets.push(elements[i] as SVGGraphicsElement);
     }
     const t = new ElementTransformer(targets);
+    t.show();
 
+    /*
     const self = this;
     const nativeCanvas = this._canvas.nativeElement;
     this._canvas.nativeElement.addEventListener("mousedown", (event) => {
@@ -38,7 +40,7 @@ export = class ImageEditor {
           }
         }
       }
-    });
+    });*/
   }
 
   public _getElementContainer(elem: SVGGraphicsElement): SVGGraphicsElement {
