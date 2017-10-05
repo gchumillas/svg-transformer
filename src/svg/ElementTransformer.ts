@@ -51,39 +51,11 @@ export class ElementTransformer {
     return this._isVisible;
   }
 
-  set isVisible(value: boolean) {
-    if (this._isVisible === value) {
-      return;
-    }
-
-    if (value) {
-      this._create();
-    } else if (this._isVisible) {
-      this._destroy();
-    }
-
-    this._isVisible = value;
-  }
-
   public show(): void {
     if (this._isVisible) {
       return;
     }
 
-    this._create();
-    this._isVisible = true;
-  }
-
-  public hide(): void {
-    if (!this._isVisible) {
-      return;
-    }
-
-    this._destroy();
-    this._isVisible = false;
-  }
-
-  private _create(): void {
     this._container = new SvgGraphicElement("g");
     this._canvas.append(this._container);
 
@@ -92,9 +64,15 @@ export class ElementTransformer {
     this._createRotateHandle();
     this._createResizeHandles();
     this._update();
+
+    this._isVisible = true;
   }
 
-  private _destroy(): void {
+  public hide(): void {
+    if (!this._isVisible) {
+      return;
+    }
+
     // removes scale handles
     for (const orientation in this._scaleHandles) {
       if (!this._scaleHandles.hasOwnProperty(orientation)) {
@@ -111,6 +89,8 @@ export class ElementTransformer {
     this._dragger.remove();
     this._rotateHandle.remove();
     this._container.remove();
+
+    this._isVisible = false;
   }
 
   private _update(): void {

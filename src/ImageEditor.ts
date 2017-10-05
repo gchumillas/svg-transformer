@@ -12,7 +12,7 @@ export = class ImageEditor {
 
     const elements = document.querySelectorAll(`#${svgId} > *`);
     const t = new ElementTransformer(elements);
-    t.isVisible = true;
+    t.show();
 
     /*
     const self = this;
