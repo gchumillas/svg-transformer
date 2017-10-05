@@ -39,6 +39,10 @@ export class ElementTransformer {
     const items = elements instanceof Element ? [elements] : elements;
     const len = items.length;
 
+    if (len === 0) {
+      throw new Error("Zero elements found in the list");
+    }
+
     this.hide();
 
     this._elements = [];
