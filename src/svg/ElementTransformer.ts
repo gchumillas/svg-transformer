@@ -23,22 +23,6 @@ export class ElementTransformer {
     horizontal: Handle[],
     vertical: Handle[]};
 
-  constructor(_elements: Element[]|NodeListOf<Element>) {
-    this._elements = [];
-    const len = _elements.length;
-    for (let i = 0; i < len; i++) {
-      const elem = _elements[i];
-
-      if (elem instanceof SVGGraphicsElement) {
-        this._elements.push(new SvgGraphicElement(elem));
-      }
-    }
-
-    this._isVisible = false;
-    // TODO: remove [0]
-    this._canvas = this._elements[0].ownerElement;
-  }
-
   get elements(): SVGGraphicsElement[] {
     return this._elements.map((value) => value.nativeElement);
   }
@@ -51,11 +35,35 @@ export class ElementTransformer {
     return this._isVisible;
   }
 
-  public show(): void {
-    if (this._isVisible) {
-      return;
+  public show(elements: Element[]|NodeListOf<Element>): void {
+    this.hide();
+
+    this._elements = [];
+    const len = elements.length;
+    for (let i = 0; i < len; i++) {
+      const elem = elements[i];
+
+      if (elem instanceof SVGGraphicsElement) {
+        this._elements.push(new SvgGraphicElement(elem));
+      } else {
+        const maxLen = 100;
+        const ellipsis = "...";
+        let outerHtml = elem.outerHTML || "";
+
+        outerHtml = outerHtml.replace(/\s+/g, " ");
+        if (outerHtml.length > maxLen) {
+          outerHtml = outerHtml.substring(0, maxLen - ellipsis.length) +
+            ellipsis;
+        }
+
+        throw Error(
+          `The following element is not a SVGGraphicsElement: ${outerHtml}`);
+      }
     }
 
+    this._isVisible = true;
+    // TODO: remove [0]
+    this._canvas = this._elements[0].ownerElement;
     this._container = new SvgGraphicElement("g");
     this._canvas.append(this._container);
 
@@ -64,8 +72,6 @@ export class ElementTransformer {
     this._createRotateHandle();
     this._createResizeHandles();
     this._update();
-
-    this._isVisible = true;
   }
 
   public hide(): void {
