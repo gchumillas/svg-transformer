@@ -10,13 +10,8 @@ export = class ImageEditor {
     this._canvas = new SvgGraphicElement(
       document.querySelector(`#${svgId}`) as SVGSVGElement);
 
-    const targets: SVGGraphicsElement[] = [];
     const elements = document.querySelectorAll(`#${svgId} > *`);
-    const len = elements.length;
-    for (let i = 0; i < len; i++) {
-      targets.push(elements[i] as SVGGraphicsElement);
-    }
-    const t = new ElementTransformer(targets);
+    const t = new ElementTransformer(elements);
     t.isVisible = true;
 
     /*

@@ -23,9 +23,19 @@ export class ElementTransformer {
     horizontal: Handle[],
     vertical: Handle[]};
 
-  constructor(_elements: SVGGraphicsElement[]) {
+  constructor(_elements: Element[]|NodeListOf<Element>) {
+    this._elements = [];
+    const len = _elements.length;
+    for (let i = 0; i < len; i++) {
+      const elem = _elements[i];
+
+      if (elem instanceof SVGGraphicsElement) {
+        this._elements.push(new SvgGraphicElement(elem));
+      }
+    }
+
     this._isVisible = false;
-    this._elements = _elements.map((elem) => new SvgGraphicElement(elem));
+    // TODO: remove [0]
     this._canvas = this._elements[0].ownerElement;
   }
 
