@@ -45,7 +45,6 @@ export class ElementTransformer {
 
     this.hide();
 
-    this._isVisible = true;
     this._canvas = null;
     this._elements = [];
     for (let i = 0; i < len; i++) {
@@ -86,6 +85,8 @@ export class ElementTransformer {
     this._createRotateHandle();
     this._createResizeHandles();
     this._update();
+
+    this._isVisible = true;
   }
 
   public hide(): void {
