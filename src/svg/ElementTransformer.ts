@@ -45,12 +45,23 @@ export class ElementTransformer {
 
     this.hide();
 
+    this._isVisible = true;
+    this._canvas = null;
     this._elements = [];
     for (let i = 0; i < len; i++) {
       const elem = items[i];
 
       if (elem instanceof SVGGraphicsElement) {
-        this._elements.push(new SvgGraphicElement(elem));
+        const item = new SvgGraphicElement(elem);
+        const canvas = elem.ownerSVGElement;
+
+        if (!this._canvas) {
+          this._canvas = new SvgGraphicElement(canvas);
+        } else if (!this._canvas.nativeElement.isSameNode(canvas)) {
+          throw new Error("The elements must belong to the same SVG element");
+        }
+
+        this._elements.push(item);
       } else {
         const maxLen = 100;
         const ellipsis = "...";
@@ -67,9 +78,6 @@ export class ElementTransformer {
       }
     }
 
-    this._isVisible = true;
-    // TODO: remove [0]
-    this._canvas = this._elements[0].ownerElement;
     this._container = new SvgGraphicElement("g");
     this._canvas.append(this._container);
 
