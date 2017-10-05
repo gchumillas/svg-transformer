@@ -35,13 +35,15 @@ export class ElementTransformer {
     return this._isVisible;
   }
 
-  public show(elements: Element[]|NodeListOf<Element>): void {
+  public show(elements: Element|Element[]|NodeListOf<Element>): void {
+    const items = elements instanceof Element ? [elements]: elements;
+    const len = items.length;
+
     this.hide();
 
     this._elements = [];
-    const len = elements.length;
     for (let i = 0; i < len; i++) {
-      const elem = elements[i];
+      const elem = items[i];
 
       if (elem instanceof SVGGraphicsElement) {
         this._elements.push(new SvgGraphicElement(elem));
