@@ -36,7 +36,7 @@ export class ElementTransformer {
   }
 
   public show(elements: Element|Element[]|NodeListOf<Element>): void {
-    const items = elements instanceof Element ? [elements]: elements;
+    const items = elements instanceof Element ? [elements] : elements;
     const len = items.length;
 
     this.hide();
