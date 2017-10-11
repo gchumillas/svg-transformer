@@ -4,7 +4,7 @@ export class SvgElement<Type extends SVGElement> {
   public readonly nativeElement: Type;
 
   constructor(target: string | Type, attributes: {[key: string]: any} = {}) {
-    if ( typeof target === "string" ) {
+    if (typeof target === "string") {
       this.nativeElement = document.createElementNS(
         "http://www.w3.org/2000/svg", target.toString()) as Type;
     } else {
