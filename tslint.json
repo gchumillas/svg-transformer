@@ -5,7 +5,8 @@
         "max-line-length": [true, 80],
         "no-console": [false],
         "variable-name": [true, "check-format", "allow-leading-underscore"],
-        "typedef": [true, "call-signature"]
+        "typedef": [true, "call-signature"],
+        "object-literal-sort-keys": false
     },
     "extends": "tslint:recommended"
 }
