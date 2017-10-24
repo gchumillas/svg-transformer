@@ -11,19 +11,6 @@ export class Dragger extends SvgGraphicElement {
       .setAttr("opacity", 0);
   }
 
-  get position(): Point {
-    const x = parseInt(this.getAttr("x"), 10);
-    const y = parseInt(this.getAttr("y"), 10);
-
-    return new Vector(x, y);
-  }
-
-  set position(value: Point) {
-    this
-      .setAttr("x", value.x)
-      .setAttr("y", value.y);
-  }
-
   get width(): number {
     return parseInt(this.getAttr("width"), 10);
   }

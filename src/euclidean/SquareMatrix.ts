@@ -24,6 +24,7 @@ export class SquareMatrix extends Matrix {
         this._getCofactor(col, row))))).transpose();
   }
 
+  // TODO: optimize for 2x2 and 3x3
   public determinant(): number {
     const vector = this.width > 0 ? this.vectors[0] : new Vector();
     const initVal = this.width > 0 ? 0 : 1;
