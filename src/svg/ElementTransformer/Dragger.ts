@@ -8,7 +8,7 @@ export class Dragger extends SvgGraphicElement {
 
     this
       .setAttr("fill", "000")
-      .setAttr("opacity", 0);
+      .setAttr("opacity", 0.5);
   }
 
   get width(): number {
