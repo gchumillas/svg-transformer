@@ -3,7 +3,6 @@ import {Transformation} from "../../euclidean/dim2/Transformation";
 import {Vector} from "../../euclidean/dim2/Vector";
 import {SvgGraphicElement} from "./../SvgGraphicElement";
 
-// NOTE: `bounding box` is not the smallest box. See: getBoundingClientRect()
 export class SvgGroup {
   private _elements: SvgGraphicElement[];
   private _topLeftCorner: Point;
@@ -50,6 +49,7 @@ export class SvgGroup {
     this._transformation = value;
   }
 
+  // NOTE: `bounding box` is not the smallest box. See: getBoundingClientRect()
   private _getPoints(
     getCorners: (
       x: number,
