@@ -1,4 +1,3 @@
-// TODO: remove unused libraries
 import {Point} from "../euclidean/dim2/Point";
 import {Transformation} from "../euclidean/dim2/Transformation";
 import {Vector} from "../euclidean/dim2/Vector";
