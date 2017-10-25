@@ -1,10 +1,9 @@
 import {Point} from "../../euclidean/dim2/Point";
 import {Transformation} from "../../euclidean/dim2/Transformation";
 import {Vector} from "../../euclidean/dim2/Vector";
-import {ITransformable} from "../../euclidean/Transformation";
 import {SvgGraphicElement} from "./../SvgGraphicElement";
 
-export class SvgGroup implements ITransformable {
+export class SvgGroup {
   private _elements: SvgGraphicElement[];
   private _outerTopLeftCorner: Point;
   private _innerTopLeftCorner: Point;
@@ -54,19 +53,6 @@ export class SvgGroup implements ITransformable {
     }
 
     this._transformation = value;
-  }
-
-  public transform(t: Transformation): SvgGroup {
-    const t0 = this.transformation;
-
-    for (const elem of this._elements) {
-      elem
-        .transform(t0.inverse())
-        .transform(t)
-        .transform(t0);
-    }
-
-    return this;
   }
 
   private _getPoints(
