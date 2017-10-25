@@ -121,7 +121,8 @@ export class ElementTransformer {
   }
 
   private _update(): void {
-    const box = this._target.boundingBox;
+    const width = this._target.width;
+    const height = this._target.height;
     const t = this._target.transformation;
 
     this._dragger.transformation = t;
@@ -132,21 +133,21 @@ export class ElementTransformer {
 
     // places rotate handle
     // TODO: -30 shoud be a constant
-    this._rotateHandle.position = new Vector(box.width / 2, -30).transform(t);
+    this._rotateHandle.position = new Vector(width / 2, -30).transform(t);
 
     // places scale handles
     const orientations: {[key: string]: Vector[]} = {
       diagonal: [
         new Vector(0, 0),
-        new Vector(box.width, 0),
-        new Vector(0, box.height),
-        new Vector(box.width, box.height)],
+        new Vector(width, 0),
+        new Vector(0, height),
+        new Vector(width, height)],
       horizontal: [
-        new Vector(box.width, box.height / 2),
-        new Vector(0, box.height / 2)],
+        new Vector(width, height / 2),
+        new Vector(0, height / 2)],
       vertical: [
-        new Vector(box.width / 2, 0),
-        new Vector(box.width / 2, box.height)]};
+        new Vector(width / 2, 0),
+        new Vector(width / 2, height)]};
     for (const orientation in orientations) {
       if (!orientations.hasOwnProperty(orientation)) {
         continue;
@@ -168,16 +169,17 @@ export class ElementTransformer {
   }
 
   private _createPath(): void {
-    const box = this._target.boundingBox;
+    const width = this._target.width;
+    const height = this._target.height;
     const t = this._target.transformation;
 
     // points of reference
-    const p0 = new Vector(box.width / 2, -30).transform(t);
-    const p1 = new Vector(box.width / 2, 0).transform(t);
+    const p0 = new Vector(width / 2, -30).transform(t);
+    const p1 = new Vector(width / 2, 0).transform(t);
     const p2 = new Vector(0, 0).transform(t);
-    const p3 = new Vector(0, box.height).transform(t);
-    const p4 = new Vector(box.width, box.height).transform(t);
-    const p5 = new Vector(box.width, 0).transform(t);
+    const p3 = new Vector(0, height).transform(t);
+    const p4 = new Vector(width, height).transform(t);
+    const p5 = new Vector(width, 0).transform(t);
 
     // redraws the path
     this._path = new SvgPath()
@@ -194,12 +196,13 @@ export class ElementTransformer {
   // rectangle placed over the image.
   private _createDragger(): void {
     const self = this;
-    const box = this._target.boundingBox;
+    const width = this._target.width;
+    const height = this._target.height;
 
     // creates a 'dragger' and places it over the image
     this._dragger = new Dragger();
-    this._dragger.width = box.width;
-    this._dragger.height = box.height;
+    this._dragger.width = width;
+    this._dragger.height = height;
     this._container.append(this._dragger);
 
     let p0: Point;
@@ -251,19 +254,20 @@ export class ElementTransformer {
     const self = this;
 
     // calculates the handle positions
-    const box = this._target.boundingBox;
+    const width = this._target.width;
+    const height = this._target.height;
     const positionGroups: {[key: string]: Vector[]} = {
       diagonal: [
         new Vector(0, 0),
-        new Vector(box.width, 0),
-        new Vector(0, box.height),
-        new Vector(box.width, box.height)],
+        new Vector(width, 0),
+        new Vector(0, height),
+        new Vector(width, height)],
       horizontal: [
-        new Vector(box.width, box.height / 2),
-        new Vector(0, box.height / 2)],
+        new Vector(width, height / 2),
+        new Vector(0, height / 2)],
       vertical: [
-        new Vector(box.width / 2, 0),
-        new Vector(box.width / 2, box.height)]};
+        new Vector(width / 2, 0),
+        new Vector(width / 2, height)]};
 
     this._scaleHandles = {
       diagonal: [],
@@ -312,9 +316,10 @@ export class ElementTransformer {
   }
 
   private _getCenter(): Point {
-    const box = this._target.boundingBox;
+    const width = this._target.width;
+    const height = this._target.height;
 
-    return new Vector(box.width / 2, box.height / 2);
+    return new Vector(width / 2, height / 2);
   }
 }
 

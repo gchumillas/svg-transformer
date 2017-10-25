@@ -3,11 +3,14 @@ import {Transformation} from "../../euclidean/dim2/Transformation";
 import {Vector} from "../../euclidean/dim2/Vector";
 import {SvgGraphicElement} from "./../SvgGraphicElement";
 
+// NOTE: `bounding box` is not the smallest box. See: getBoundingClientRect()
 export class SvgGroup {
   private _elements: SvgGraphicElement[];
   private _outerTopLeftCorner: Point;
   private _innerTopLeftCorner: Point;
   private _bottomRightCorner: Point;
+  private _width: number;
+  private _height: number;
   private _boundingBox: {x: number, y: number, width: number, height: number};
   private _transformation: Transformation;
 
@@ -27,18 +30,18 @@ export class SvgGroup {
     this._outerTopLeftCorner = this._getTopLeftCorner(outerPoints);
     this._innerTopLeftCorner = this._getTopLeftCorner(innerPoints);
     this._bottomRightCorner = this._getBottomRightCorner(innerPoints);
-    this._boundingBox = {
-      x: this._outerTopLeftCorner.x - this._innerTopLeftCorner.x,
-      y: this._outerTopLeftCorner.y - this._innerTopLeftCorner.y,
-      width: this._bottomRightCorner.x - this._innerTopLeftCorner.x,
-      height: this._bottomRightCorner.y - this._innerTopLeftCorner.y};
+    this._width = this._bottomRightCorner.x - this._innerTopLeftCorner.x;
+    this._height = this._bottomRightCorner.y - this._innerTopLeftCorner.y;
     this._transformation = new Transformation()
       .translate(this._innerTopLeftCorner);
   }
 
-  // NOTE: `bounding box` is not the smallest box. See: getBoundingClientRect()
-  get boundingBox(): {x: number, y: number, width: number, height: number} {
-    return this._boundingBox;
+  get width(): number {
+    return this._width;
+  }
+
+  get height(): number {
+    return this._height;
   }
 
   get transformation(): Transformation {
