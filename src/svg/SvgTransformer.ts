@@ -59,9 +59,6 @@ export class SvgTransformer {
 
         if (!this._canvas) {
           this._canvas = new SvgGraphicElement(canvas);
-        } else if (!this._canvas.nativeElement.isSameNode(canvas)) {
-          // TODO: it's not necessary
-          throw new Error("The elements must belong to the same SVG element");
         }
 
         this._elements.push(item);
