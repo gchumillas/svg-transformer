@@ -5,8 +5,6 @@ import {SvgGraphicElement} from "./../SvgGraphicElement";
 
 export class SvgGroup {
   private _elements: SvgGraphicElement[];
-  private _topLeftCorner: Point;
-  private _bottomRightCorner: Point;
   private _width: number;
   private _height: number;
   private _transformation: Transformation;
@@ -14,17 +12,29 @@ export class SvgGroup {
   constructor(elements: SvgGraphicElement[]) {
     this._elements = elements;
 
-    const points = this._getPoints((x, y, width, height) => [
-      new Vector(x, y),
-      new Vector(x + width, y),
-      new Vector(x + width, y + height),
-      new Vector(x, y + height)]);
-    this._topLeftCorner = this._getTopLeftCorner(points);
-    this._bottomRightCorner = this._getBottomRightCorner(points);
-    this._width = this._bottomRightCorner.x - this._topLeftCorner.x;
-    this._height = this._bottomRightCorner.y - this._topLeftCorner.y;
-    this._transformation = new Transformation()
-      .translate(this._topLeftCorner);
+    if (elements.length < 1) {
+      throw new Error("Argument error: number of elements lower than 1");
+    } else if (elements.length > 1) {
+      const points = this._getPoints((x, y, width, height) => [
+        new Vector(x, y),
+        new Vector(x + width, y),
+        new Vector(x + width, y + height),
+        new Vector(x, y + height)]);
+      const topLeftCorner = this._getTopLeftCorner(points);
+      const bottomRightCorner = this._getBottomRightCorner(points);
+
+      this._width = bottomRightCorner.x - topLeftCorner.x;
+      this._height = bottomRightCorner.y - topLeftCorner.y;
+      this._transformation = new Transformation()
+        .translate(topLeftCorner);
+    } else {
+      const element = this._elements[0];
+      const box = element.boundingBox;
+
+      this._width = box.width;
+      this._height = box.height;
+      this._transformation = element.transformation;
+    }
   }
 
   get width(): number {
