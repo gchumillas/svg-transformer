@@ -131,22 +131,22 @@ export class ElementTransformer {
     this._createPath();
 
     // places rotate handle
-    this._rotateHandle.position = new Vector(box.x + box.width / 2, box.y - 30)
-      .transform(t);
+    // TODO: -30 shoud be a constant
+    this._rotateHandle.position = new Vector(box.width / 2, -30).transform(t);
 
     // places scale handles
     const orientations: {[key: string]: Vector[]} = {
       diagonal: [
-        new Vector(box.x, box.y),
-        new Vector(box.x + box.width, box.y),
-        new Vector(box.x, box.y + box.height),
-        new Vector(box.x + box.width, box.y + box.height)],
+        new Vector(0, 0),
+        new Vector(box.width, 0),
+        new Vector(0, box.height),
+        new Vector(box.width, box.height)],
       horizontal: [
-        new Vector(box.x + box.width, box.y + box.height / 2),
-        new Vector(box.x, box.y + box.height / 2)],
+        new Vector(box.width, box.height / 2),
+        new Vector(0, box.height / 2)],
       vertical: [
-        new Vector(box.x + box.width / 2, box.y),
-        new Vector(box.x + box.width / 2, box.y + box.height)]};
+        new Vector(box.width / 2, 0),
+        new Vector(box.width / 2, box.height)]};
     for (const orientation in orientations) {
       if (!orientations.hasOwnProperty(orientation)) {
         continue;
@@ -172,12 +172,12 @@ export class ElementTransformer {
     const t = this._target.transformation;
 
     // points of reference
-    const p0 = new Vector(box.x + box.width / 2, box.y - 30).transform(t);
-    const p1 = new Vector(box.x + box.width / 2, box.y).transform(t);
-    const p2 = new Vector(box.x, box.y).transform(t);
-    const p3 = new Vector(box.x, box.y + box.height).transform(t);
-    const p4 = new Vector(box.x + box.width, box.y + box.height).transform(t);
-    const p5 = new Vector(box.x + box.width, box.y).transform(t);
+    const p0 = new Vector(box.width / 2, -30).transform(t);
+    const p1 = new Vector(box.width / 2, 0).transform(t);
+    const p2 = new Vector(0, 0).transform(t);
+    const p3 = new Vector(0, box.height).transform(t);
+    const p4 = new Vector(box.width, box.height).transform(t);
+    const p5 = new Vector(box.width, 0).transform(t);
 
     // redraws the path
     this._path = new SvgPath()
@@ -254,16 +254,16 @@ export class ElementTransformer {
     const box = this._target.boundingBox;
     const positionGroups: {[key: string]: Vector[]} = {
       diagonal: [
-        new Vector(box.x, box.y),
-        new Vector(box.x + box.width, box.y),
-        new Vector(box.x, box.y + box.height),
-        new Vector(box.x + box.width, box.y + box.height)],
+        new Vector(0, 0),
+        new Vector(box.width, 0),
+        new Vector(0, box.height),
+        new Vector(box.width, box.height)],
       horizontal: [
-        new Vector(box.x + box.width, box.y + box.height / 2),
-        new Vector(box.x, box.y + box.height / 2)],
+        new Vector(box.width, box.height / 2),
+        new Vector(0, box.height / 2)],
       vertical: [
-        new Vector(box.x + box.width / 2, box.y),
-        new Vector(box.x + box.width / 2, box.y + box.height)]};
+        new Vector(box.width / 2, 0),
+        new Vector(box.width / 2, box.height)]};
 
     this._scaleHandles = {
       diagonal: [],
@@ -314,7 +314,7 @@ export class ElementTransformer {
   private _getCenter(): Point {
     const box = this._target.boundingBox;
 
-    return new Vector(box.x + box.width / 2, box.y + box.height / 2);
+    return new Vector(box.width / 2, box.height / 2);
   }
 }
 
