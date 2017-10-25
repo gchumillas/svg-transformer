@@ -1,7 +1,6 @@
 import {SquareMatrix} from "./SquareMatrix";
 import {Vector} from "./Vector";
 
-// TODO: implement `transformation` property
 export interface ITransformable {
   transform(t: Transformation): ITransformable;
 }
