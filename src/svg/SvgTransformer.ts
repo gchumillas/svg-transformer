@@ -3,15 +3,15 @@ import {Point} from "../euclidean/dim2/Point";
 import {Transformation} from "../euclidean/dim2/Transformation";
 import {Vector} from "../euclidean/dim2/Vector";
 import {SquareMatrix} from "../euclidean/SquareMatrix";
-import {Dragger} from "./ElementTransformer/Dragger";
-import {Handle} from "./ElementTransformer/Handle";
-import {SvgGroup} from "./ElementTransformer/SvgGroup";
 import {SvgElement} from "./SvgElement";
 import {SvgGraphicElement} from "./SvgGraphicElement";
 import {SvgPath} from "./SvgPath";
+import {Dragger} from "./SvgTransformer/Dragger";
+import {Handle} from "./SvgTransformer/Handle";
+import {SvgGroup} from "./SvgTransformer/SvgGroup";
 
 // A decorator class to 'transform' (resize, scale or rotate) an SVG element.
-export class ElementTransformer {
+export class SvgTransformer {
   private _canvas: SvgGraphicElement;
   private _isVisible: boolean;
   private _target: SvgGroup;
