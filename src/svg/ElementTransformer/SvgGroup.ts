@@ -37,6 +37,7 @@ export class SvgGroup implements ITransformable {
       .translate(this._innerTopLeftCorner);
   }
 
+  // NOTE: `bounding box` is not the smallest box. See: getBoundingClientRect()
   get boundingBox(): {x: number, y: number, width: number, height: number} {
     return this._boundingBox;
   }
