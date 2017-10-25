@@ -1,5 +1,8 @@
-import {Vector} from "./euclidean/Vector";
+import {Transformation} from "./euclidean/dim2/Transformation";
+import {Vector} from "./euclidean/dim2/Vector";
+import {deg2rad} from "./euclidean/utils";
 import {ElementTransformer} from "./svg/ElementTransformer";
+import {SvgGroup} from "./svg/ElementTransformer/SvgGroup";
 import {SvgGraphicElement} from "./svg/SvgGraphicElement";
 
 export = class ImageEditor {
@@ -7,12 +10,20 @@ export = class ImageEditor {
   private _transformer: ElementTransformer;
 
   constructor(svgId: string) {
+    /*
     this._canvas = new SvgGraphicElement(
-      document.querySelector(`#${svgId}`) as SVGSVGElement);
+      document.querySelector(`#${svgId}`) as SVGSVGElement);*/
+
+    /*
+    const elem1 = new SvgGraphicElement(
+      document.querySelector("#path1") as SVGGraphicsElement);
+    const elem2 = new SvgGraphicElement(
+      document.querySelector("#rect1") as SVGGraphicsElement);
+    const g = new SvgGroup([elem1, elem2]);*/
 
     const elements = document.querySelectorAll(`#${svgId} > *`);
-    const t = new ElementTransformer(elements);
-    t.show();
+    const t = new ElementTransformer();
+    t.show(elements);
 
     /*
     const self = this;
