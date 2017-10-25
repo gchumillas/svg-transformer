@@ -48,6 +48,7 @@ export class SvgTransformer {
 
     this.hide();
 
+    // gets the elements and the canvas property
     this._canvas = null;
     this._elements = [];
     for (let i = 0; i < len; i++) {
@@ -63,19 +64,7 @@ export class SvgTransformer {
 
         this._elements.push(item);
       } else {
-        // TODO: too long for a simple error message
-        const maxLen = 100;
-        const ellipsis = "...";
-        let outerHtml = elem.outerHTML || "";
-
-        outerHtml = outerHtml.replace(/\s+/g, " ");
-        if (outerHtml.length > maxLen) {
-          outerHtml = outerHtml.substring(0, maxLen - ellipsis.length) +
-            ellipsis;
-        }
-
-        throw Error(
-          `The following element is not a SVGGraphicsElement: ${outerHtml}`);
+        throw new Error("Argument error: not a SVGGraphicsElement");
       }
     }
 
