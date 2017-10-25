@@ -43,7 +43,7 @@ export class SvgTransformer {
     const len = items.length;
 
     if (len === 0) {
-      throw new Error("Zero elements found in the list");
+      throw new Error("Argument error: zero elements");
     }
 
     this.hide();
