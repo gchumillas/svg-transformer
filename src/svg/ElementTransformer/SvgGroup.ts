@@ -6,34 +6,26 @@ import {SvgGraphicElement} from "./../SvgGraphicElement";
 // NOTE: `bounding box` is not the smallest box. See: getBoundingClientRect()
 export class SvgGroup {
   private _elements: SvgGraphicElement[];
-  private _outerTopLeftCorner: Point;
-  private _innerTopLeftCorner: Point;
+  private _topLeftCorner: Point;
   private _bottomRightCorner: Point;
   private _width: number;
   private _height: number;
-  private _boundingBox: {x: number, y: number, width: number, height: number};
   private _transformation: Transformation;
 
   constructor(elements: SvgGraphicElement[]) {
     this._elements = elements;
 
-    const outerPoints = this._getPoints((x, y, width, height) => [
-      new Vector(0, 0),
-      new Vector(width, 0),
-      new Vector(width, height),
-      new Vector(0, height)]);
-    const innerPoints = this._getPoints((x, y, width, height) => [
+    const points = this._getPoints((x, y, width, height) => [
       new Vector(x, y),
       new Vector(x + width, y),
       new Vector(x + width, y + height),
       new Vector(x, y + height)]);
-    this._outerTopLeftCorner = this._getTopLeftCorner(outerPoints);
-    this._innerTopLeftCorner = this._getTopLeftCorner(innerPoints);
-    this._bottomRightCorner = this._getBottomRightCorner(innerPoints);
-    this._width = this._bottomRightCorner.x - this._innerTopLeftCorner.x;
-    this._height = this._bottomRightCorner.y - this._innerTopLeftCorner.y;
+    this._topLeftCorner = this._getTopLeftCorner(points);
+    this._bottomRightCorner = this._getBottomRightCorner(points);
+    this._width = this._bottomRightCorner.x - this._topLeftCorner.x;
+    this._height = this._bottomRightCorner.y - this._topLeftCorner.y;
     this._transformation = new Transformation()
-      .translate(this._innerTopLeftCorner);
+      .translate(this._topLeftCorner);
   }
 
   get width(): number {
