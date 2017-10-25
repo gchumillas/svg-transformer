@@ -1,5 +1,3 @@
-import {Point} from "../../euclidean/dim2/Point";
-import {Vector} from "../../euclidean/dim2/Vector";
 import {SvgGraphicElement} from "./../SvgGraphicElement";
 
 export class Dragger extends SvgGraphicElement {

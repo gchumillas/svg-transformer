@@ -1,6 +1,3 @@
-import {Transformation} from "./euclidean/dim2/Transformation";
-import {Vector} from "./euclidean/dim2/Vector";
-import {deg2rad} from "./euclidean/utils";
 import {SvgGraphicElement} from "./svg/SvgGraphicElement";
 import {SvgTransformer} from "./svg/SvgTransformer";
 import {SvgGroup} from "./svg/SvgTransformer/SvgGroup";

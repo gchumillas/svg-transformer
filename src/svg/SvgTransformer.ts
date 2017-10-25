@@ -3,7 +3,6 @@ import {Point} from "../euclidean/dim2/Point";
 import {Transformation} from "../euclidean/dim2/Transformation";
 import {Vector} from "../euclidean/dim2/Vector";
 import {SquareMatrix} from "../euclidean/SquareMatrix";
-import {SvgElement} from "./SvgElement";
 import {SvgGraphicElement} from "./SvgGraphicElement";
 import {SvgPath} from "./SvgPath";
 import {Dragger} from "./SvgTransformer/Dragger";
@@ -172,10 +171,6 @@ export class SvgTransformer {
       .moveTo(p0)
       .lineTo(p1).lineTo(p2).lineTo(p3).lineTo(p4).lineTo(p5).lineTo(p1);
     this._container.prepend(this._path);
-  }
-
-  private _getContainerTransformation(): Transformation {
-    return null;
   }
 
   // The 'dragger' is used to move the image. It consists of a transparent
