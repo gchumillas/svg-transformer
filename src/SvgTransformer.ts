@@ -13,6 +13,7 @@ export = class SvgTransformer {
   private _necklength: number = 30;
   private _stroke: string = "black";
   private _strokeWidth: number = 2;
+  private _handleRadius: number = 10;
   private _canvas: SvgGraphicElement;
   private _isVisible: boolean = false;
   private _target: SvgGroup;
@@ -69,6 +70,18 @@ export = class SvgTransformer {
 
   set strokeWidth(value: number) {
     this._strokeWidth = value;
+
+    if (this._isVisible) {
+      this._update();
+    }
+  }
+
+  get handleRadius(): number {
+    return this._handleRadius;
+  }
+
+  set handleRadius(value: number) {
+    this._handleRadius = value;
 
     if (this._isVisible) {
       this._update();
@@ -252,9 +265,8 @@ export = class SvgTransformer {
     let t0: Transformation;
 
     // creates a handle and places it on the top of the transformation tool
-    // TODO: radius should be a constant
     this._rotateHandle = new Handle({
-      "r": 10,
+      "r": this._handleRadius,
       "stroke": this._stroke,
       "stroke-width": this._strokeWidth});
     this._container.append(this._rotateHandle);
@@ -309,7 +321,7 @@ export = class SvgTransformer {
         let t0: Transformation;
 
         const handle = new Handle({
-          "r": 10,
+          "r": this._handleRadius,
           "stroke": this._stroke,
           "stroke-width": this._strokeWidth,
           "fill": "transparent"});
