@@ -11,7 +11,7 @@ import {SvgPath} from "./SvgTransformer/SvgPath";
 // A decorator class to 'transform' (resize, scale or rotate) an SVG element.
 export = class SvgTransformer {
   private _canvas: SvgGraphicElement;
-  private _isVisible: boolean;
+  private _isVisible: boolean = false;
   private _target: SvgGroup;
   private _elements: SvgGraphicElement[] = [];
   private _container: SvgGraphicElement;
