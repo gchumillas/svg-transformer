@@ -9,7 +9,7 @@ import {SvgGroup} from "./SvgTransformer/SvgGroup";
 import {SvgPath} from "./SvgTransformer/SvgPath";
 
 // A decorator class to 'transform' (resize, scale or rotate) an SVG element.
-export class SvgTransformer {
+export = class SvgTransformer {
   private _canvas: SvgGraphicElement;
   private _isVisible: boolean;
   private _target: SvgGroup;
@@ -301,7 +301,7 @@ export class SvgTransformer {
 
     return new Vector(width / 2, height / 2);
   }
-}
+};
 
 // Gets the angle adjacent to [p2] of the triangle defined by
 // [p0], [p1] and [p2] in the direction of the hands of a clock.

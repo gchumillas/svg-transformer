@@ -739,8 +739,16 @@ define("SvgTransformer/SvgPath", ["require", "exports", "svg/SvgGraphicElement"]
 });
 define("SvgTransformer", ["require", "exports", "euclidean/dim2/Transformation", "euclidean/dim2/Vector", "euclidean/SquareMatrix", "svg/SvgGraphicElement", "SvgTransformer/Dragger", "SvgTransformer/Handle", "SvgTransformer/SvgGroup", "SvgTransformer/SvgPath"], function (require, exports, Transformation_4, Vector_10, SquareMatrix_2, SvgGraphicElement_5, Dragger_1, Handle_1, SvgGroup_1, SvgPath_1) {
     "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    var SvgTransformer = (function () {
+    function _getAdjacentAngle(p0, p1, p2) {
+        var u = p1.subtract(p2);
+        var u0 = u.unit();
+        var u1 = new Vector_10.Vector(u0.y, -u0.x);
+        var v = p0.subtract(p2);
+        var m = new SquareMatrix_2.SquareMatrix(u0, u1);
+        var w = v.multiply(m.inverse());
+        return Math.atan2(w.y, w.x);
+    }
+    return (function () {
         function SvgTransformer() {
         }
         Object.defineProperty(SvgTransformer.prototype, "elements", {
@@ -988,41 +996,6 @@ define("SvgTransformer", ["require", "exports", "euclidean/dim2/Transformation",
             return new Vector_10.Vector(width / 2, height / 2);
         };
         return SvgTransformer;
-    }());
-    exports.SvgTransformer = SvgTransformer;
-    function _getAdjacentAngle(p0, p1, p2) {
-        var u = p1.subtract(p2);
-        var u0 = u.unit();
-        var u1 = new Vector_10.Vector(u0.y, -u0.x);
-        var v = p0.subtract(p2);
-        var m = new SquareMatrix_2.SquareMatrix(u0, u1);
-        var w = v.multiply(m.inverse());
-        return Math.atan2(w.y, w.x);
-    }
-});
-define("ImageEditor", ["require", "exports", "SvgTransformer"], function (require, exports, SvgTransformer_1) {
-    "use strict";
-    return (function () {
-        function ImageEditor(svgId) {
-            var elements = document.querySelectorAll("#" + svgId + " > *");
-            var t = new SvgTransformer_1.SvgTransformer();
-            t.show(elements);
-        }
-        ImageEditor.prototype._getElementContainer = function (elem) {
-            var ret = null;
-            if (elem instanceof SVGGraphicsElement) {
-                var root = elem.ownerSVGElement;
-                if (root) {
-                    ret = elem;
-                    if (elem.parentNode instanceof SVGGraphicsElement
-                        && elem.parentNode !== root) {
-                        ret = this._getElementContainer(elem.parentNode);
-                    }
-                }
-            }
-            return ret;
-        };
-        return ImageEditor;
     }());
 });
 define("euclidean/Point", ["require", "exports"], function (require, exports) {

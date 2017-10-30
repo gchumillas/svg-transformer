@@ -1,10 +1,13 @@
 require.config({
     baseUrl: '.',
     paths: {
-        ImageEditor: '../dist/SvgTransformer'
+        SvgTransformer: '../dist/SvgTransformer'
     }
 });
 
-define(['ImageEditor'], function (ImageEditor) {
-  var editor = new ImageEditor('my-canvas');
+define(['SvgTransformer'], function (SvgTransformer) {
+  var elements = document.querySelectorAll('#my-canvas > *');
+  var t = new SvgTransformer();
+
+  t.show(elements);
 });
