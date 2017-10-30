@@ -63,6 +63,18 @@ export = class SvgTransformer {
     }
   }
 
+  get strokeWidth(): number {
+    return this._strokeWidth;
+  }
+
+  set strokeWidth(value: number) {
+    this._strokeWidth = value;
+
+    if (this._isVisible) {
+      this._update();
+    }
+  }
+
   public show(elements: Element|Element[]|NodeListOf<Element>): void {
     const items = elements instanceof Element ? [elements] : elements;
     const len = items.length;
