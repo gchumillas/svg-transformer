@@ -3,19 +3,11 @@ import {Vector} from "../euclidean/dim2/Vector";
 import {SvgGraphicElement} from "../svg/SvgGraphicElement";
 
 export class Handle extends SvgGraphicElement {
-  private radius = 10;
-  private strokeColor = "black";
-  private strokeWidth = 2;
-  private fillColor = "transparent";
+  private _fillColor = "transparent";
 
-  constructor() {
-    super("circle");
-
-    this
-      .setAttr("r", this.radius)
-      .setAttr("stroke", this.strokeColor)
-      .setAttr("stroke-width", this.strokeWidth)
-      .setAttr("fill", this.fillColor);
+  constructor(attributes: {[key: string]: any}) {
+    super("circle", attributes);
+    this.setAttr("fill", this._fillColor);
   }
 
   get position(): Point {

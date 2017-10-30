@@ -11,6 +11,8 @@ import {SvgPath} from "./SvgTransformer/SvgPath";
 // A decorator class to 'transform' (resize, scale or rotate) an SVG element.
 export = class SvgTransformer {
   private _necklength: number = 30;
+  private _stroke: string = "black";
+  private _strokeWidth: number = 2;
   private _canvas: SvgGraphicElement;
   private _isVisible: boolean = false;
   private _target: SvgGroup;
@@ -43,6 +45,18 @@ export = class SvgTransformer {
 
   set neckLength(value: number) {
     this._necklength = value;
+
+    if (this._isVisible) {
+      this._update();
+    }
+  }
+
+  get stroke(): string {
+    return this._stroke;
+  }
+
+  set stroke(value: string) {
+    this._stroke = value;
 
     if (this._isVisible) {
       this._update();
@@ -180,7 +194,10 @@ export = class SvgTransformer {
     const p5 = new Vector(width, 0).transform(t);
 
     // redraws the path
-    this._path = new SvgPath()
+    this._path = new SvgPath({
+      "stroke": this._stroke,
+      "stroke-width": this._strokeWidth,
+      "fill": "transparent"})
       .moveTo(p0)
       .lineTo(p1).lineTo(p2).lineTo(p3).lineTo(p4).lineTo(p5).lineTo(p1);
     this._container.prepend(this._path);
@@ -223,7 +240,11 @@ export = class SvgTransformer {
     let t0: Transformation;
 
     // creates a handle and places it on the top of the transformation tool
-    this._rotateHandle = new Handle();
+    // TODO: radius should be a constant
+    this._rotateHandle = new Handle({
+      "r": 10,
+      "stroke": this._stroke,
+      "stroke-width": this._strokeWidth});
     this._container.append(this._rotateHandle);
 
     this._rotateHandle
@@ -275,7 +296,11 @@ export = class SvgTransformer {
         let p0: Point;
         let t0: Transformation;
 
-        const handle = new Handle();
+        const handle = new Handle({
+          "r": 10,
+          "stroke": this._stroke,
+          "stroke-width": this._strokeWidth,
+          "fill": "transparent"});
         this._container.append(handle);
 
         handle

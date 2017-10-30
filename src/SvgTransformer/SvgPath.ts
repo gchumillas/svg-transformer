@@ -2,16 +2,9 @@ import {Point} from "../euclidean/dim2/Point";
 import {SvgGraphicElement} from "../svg/SvgGraphicElement";
 
 export class SvgPath extends SvgGraphicElement {
-  private strokeColor = "black";
-  private strokeWidth = 2;
 
-  constructor() {
-    super("path");
-
-    this
-      .setAttr("stroke", this.strokeColor)
-      .setAttr("stroke-width", this.strokeWidth)
-      .setAttr("fill", "transparent");
+  constructor(attributes: {[key: string]: any} = {}) {
+    super("path", attributes);
   }
 
   public moveTo(value: Point): SvgPath {
