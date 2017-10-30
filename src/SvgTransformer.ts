@@ -29,7 +29,7 @@ export = class SvgTransformer {
   }
 
   get container(): SVGGraphicsElement {
-    return this._container.nativeElement;
+    return this._container ? this._container.nativeElement : null;
   }
 
   get isVisible(): boolean {
