@@ -13,7 +13,7 @@ export = class SvgTransformer {
   private _canvas: SvgGraphicElement;
   private _isVisible: boolean;
   private _target: SvgGroup;
-  private _elements: SvgGraphicElement[];
+  private _elements: SvgGraphicElement[] = [];
   private _container: SvgGraphicElement;
   private _path: SvgGraphicElement;
   private _dragger: Dragger;
