@@ -46,10 +46,7 @@ export = class SvgTransformer {
 
   set neckLength(value: number) {
     this._necklength = value;
-
-    if (this._isVisible) {
-      this._update();
-    }
+    this._update();
   }
 
   get stroke(): string {
@@ -58,10 +55,7 @@ export = class SvgTransformer {
 
   set stroke(value: string) {
     this._stroke = value;
-
-    if (this._isVisible) {
-      this._update();
-    }
+    this._update();
   }
 
   get strokeWidth(): number {
@@ -70,10 +64,7 @@ export = class SvgTransformer {
 
   set strokeWidth(value: number) {
     this._strokeWidth = value;
-
-    if (this._isVisible) {
-      this._update();
-    }
+    this._update();
   }
 
   get handleRadius(): number {
@@ -82,10 +73,7 @@ export = class SvgTransformer {
 
   set handleRadius(value: number) {
     this._handleRadius = value;
-
-    if (this._isVisible) {
-      this._update();
-    }
+    this._update();
   }
 
   public show(elements: Element|Element[]|NodeListOf<Element>): void {
@@ -126,9 +114,9 @@ export = class SvgTransformer {
     this._createDragger();
     this._createRotateHandle();
     this._createResizeHandles();
-    this._update();
 
     this._isVisible = true;
+    this._update();
   }
 
   public hide(): void {
@@ -157,6 +145,10 @@ export = class SvgTransformer {
   }
 
   private _update(): void {
+    if (!this._isVisible) {
+      return;
+    }
+
     const width = this._target.width;
     const height = this._target.height;
     const t = this._target.transformation;
