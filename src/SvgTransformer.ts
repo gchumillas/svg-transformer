@@ -10,6 +10,7 @@ import {SvgPath} from "./SvgTransformer/SvgPath";
 
 // A decorator class to 'transform' (resize, scale or rotate) an SVG element.
 export = class SvgTransformer {
+  private _necklength: number = 30;
   private _canvas: SvgGraphicElement;
   private _isVisible: boolean = false;
   private _target: SvgGroup;
@@ -34,6 +35,18 @@ export = class SvgTransformer {
 
   get isVisible(): boolean {
     return this._isVisible;
+  }
+
+  get neckLength(): number {
+    return this._necklength;
+  }
+
+  set neckLength(value: number) {
+    this._necklength = value;
+
+    if (this._isVisible) {
+      this._update();
+    }
   }
 
   public show(elements: Element|Element[]|NodeListOf<Element>): void {
@@ -116,8 +129,8 @@ export = class SvgTransformer {
     this._createPath();
 
     // places rotate handle
-    // TODO: -30 shoud be a constant
-    this._rotateHandle.position = new Vector(width / 2, -30).transform(t);
+    this._rotateHandle.position = new Vector(
+      width / 2, -this._necklength / t.info.scaleY).transform(t);
 
     // places scale handles
     const orientations: {[key: string]: Vector[]} = {
@@ -158,7 +171,8 @@ export = class SvgTransformer {
     const t = this._target.transformation;
 
     // points of reference
-    const p0 = new Vector(width / 2, -30).transform(t);
+    const p0 = new Vector(
+      width / 2, -this._necklength / t.info.scaleY).transform(t);
     const p1 = new Vector(width / 2, 0).transform(t);
     const p2 = new Vector(0, 0).transform(t);
     const p3 = new Vector(0, height).transform(t);

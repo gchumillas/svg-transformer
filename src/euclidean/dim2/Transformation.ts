@@ -28,6 +28,33 @@ export class Transformation extends GeneralTransformation {
     super(...vectors);
   }
 
+  // Credits: https://stackoverflow.com/a/16372587/1704895
+  get info(): {
+    translateX: number,
+    translateY: number,
+    scaleX: number,
+    scaleY: number,
+    skewX: number,
+    skewY: number,
+    rotation: number} {
+    const coordinates = this.vectors.map((v) => v.coordinates);
+    const [a, b, c, d, e, f] = [
+      coordinates[0][0], coordinates[0][1],
+      coordinates[1][0], coordinates[1][1],
+      coordinates[2][0], coordinates[2][1]];
+    const skewX = ((180 / Math.PI) * Math.atan2(d, c) - 90);
+    const skewY = ((180 / Math.PI) * Math.atan2(b, a));
+
+    return {
+      translateX: e,
+      translateY: f,
+      scaleX: Math.sqrt(a * a + b * b),
+      scaleY: Math.sqrt(c * c + d * d),
+      skewX,
+      skewY,
+      rotation: skewX};
+  }
+
   public transform(t: Transformation): Transformation {
     return new Transformation(...super.transform(t).vectors);
   }
