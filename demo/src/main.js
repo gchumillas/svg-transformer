@@ -1,7 +1,7 @@
 require.config({
     baseUrl: '.',
     paths: {
-        ImageEditor: '../dist/ImageEditor'
+        ImageEditor: '../dist/SvgTransformer'
     }
 });
 
