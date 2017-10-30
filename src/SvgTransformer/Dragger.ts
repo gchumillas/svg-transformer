@@ -1,4 +1,4 @@
-import {SvgGraphicElement} from "./../SvgGraphicElement";
+import {SvgGraphicElement} from "../svg/SvgGraphicElement";
 
 export class Dragger extends SvgGraphicElement {
   private _backgroundColor = "000";

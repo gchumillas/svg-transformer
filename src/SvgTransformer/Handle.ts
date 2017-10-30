@@ -1,6 +1,6 @@
-import {Point} from "../../euclidean/dim2/Point";
-import {Vector} from "../../euclidean/dim2/Vector";
-import {SvgGraphicElement} from "./../SvgGraphicElement";
+import {Point} from "../euclidean/dim2/Point";
+import {Vector} from "../euclidean/dim2/Vector";
+import {SvgGraphicElement} from "../svg/SvgGraphicElement";
 
 export class Handle extends SvgGraphicElement {
   private radius = 10;

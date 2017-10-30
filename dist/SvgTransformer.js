@@ -573,7 +573,7 @@ define("svg/SvgPath", ["require", "exports", "svg/SvgGraphicElement"], function 
     }(SvgGraphicElement_2.SvgGraphicElement));
     exports.SvgPath = SvgPath;
 });
-define("svg/SvgTransformer/Dragger", ["require", "exports", "svg/SvgGraphicElement"], function (require, exports, SvgGraphicElement_3) {
+define("SvgTransformer/Dragger", ["require", "exports", "svg/SvgGraphicElement"], function (require, exports, SvgGraphicElement_3) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var Dragger = (function (_super) {
@@ -611,7 +611,7 @@ define("svg/SvgTransformer/Dragger", ["require", "exports", "svg/SvgGraphicEleme
     }(SvgGraphicElement_3.SvgGraphicElement));
     exports.Dragger = Dragger;
 });
-define("svg/SvgTransformer/Handle", ["require", "exports", "euclidean/dim2/Vector", "svg/SvgGraphicElement"], function (require, exports, Vector_8, SvgGraphicElement_4) {
+define("SvgTransformer/Handle", ["require", "exports", "euclidean/dim2/Vector", "svg/SvgGraphicElement"], function (require, exports, Vector_8, SvgGraphicElement_4) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var Handle = (function (_super) {
@@ -647,7 +647,7 @@ define("svg/SvgTransformer/Handle", ["require", "exports", "euclidean/dim2/Vecto
     }(SvgGraphicElement_4.SvgGraphicElement));
     exports.Handle = Handle;
 });
-define("svg/SvgTransformer/SvgGroup", ["require", "exports", "euclidean/dim2/Transformation", "euclidean/dim2/Vector"], function (require, exports, Transformation_3, Vector_9) {
+define("SvgTransformer/SvgGroup", ["require", "exports", "euclidean/dim2/Transformation", "euclidean/dim2/Vector"], function (require, exports, Transformation_3, Vector_9) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var SvgGroup = (function () {
@@ -737,7 +737,7 @@ define("svg/SvgTransformer/SvgGroup", ["require", "exports", "euclidean/dim2/Tra
     }());
     exports.SvgGroup = SvgGroup;
 });
-define("svg/SvgTransformer", ["require", "exports", "euclidean/dim2/Transformation", "euclidean/dim2/Vector", "euclidean/SquareMatrix", "svg/SvgGraphicElement", "svg/SvgPath", "svg/SvgTransformer/Dragger", "svg/SvgTransformer/Handle", "svg/SvgTransformer/SvgGroup"], function (require, exports, Transformation_4, Vector_10, SquareMatrix_2, SvgGraphicElement_5, SvgPath_1, Dragger_1, Handle_1, SvgGroup_1) {
+define("SvgTransformer", ["require", "exports", "euclidean/dim2/Transformation", "euclidean/dim2/Vector", "euclidean/SquareMatrix", "svg/SvgGraphicElement", "svg/SvgPath", "SvgTransformer/Dragger", "SvgTransformer/Handle", "SvgTransformer/SvgGroup"], function (require, exports, Transformation_4, Vector_10, SquareMatrix_2, SvgGraphicElement_5, SvgPath_1, Dragger_1, Handle_1, SvgGroup_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var SvgTransformer = (function () {
@@ -1000,7 +1000,7 @@ define("svg/SvgTransformer", ["require", "exports", "euclidean/dim2/Transformati
         return Math.atan2(w.y, w.x);
     }
 });
-define("ImageEditor", ["require", "exports", "svg/SvgTransformer"], function (require, exports, SvgTransformer_1) {
+define("ImageEditor", ["require", "exports", "SvgTransformer"], function (require, exports, SvgTransformer_1) {
     "use strict";
     return (function () {
         function ImageEditor(svgId) {

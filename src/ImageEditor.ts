@@ -1,6 +1,6 @@
 import {SvgGraphicElement} from "./svg/SvgGraphicElement";
-import {SvgTransformer} from "./svg/SvgTransformer";
-import {SvgGroup} from "./svg/SvgTransformer/SvgGroup";
+import {SvgTransformer} from "./SvgTransformer";
+import {SvgGroup} from "./SvgTransformer/SvgGroup";
 
 export = class ImageEditor {
   private _canvas: SvgGraphicElement;
