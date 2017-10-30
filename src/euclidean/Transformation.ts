@@ -36,6 +36,7 @@ export class Transformation extends SquareMatrix implements ITransformable {
                 ...vector.coordinates.slice(0, -1).concat([1])))));
   }
 
+  // TODO: perhaps multiply by the left?
   public transform(t: Transformation): Transformation {
     return new Transformation(...t.multiply(this).vectors);
   }
