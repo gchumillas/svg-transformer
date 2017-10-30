@@ -3,10 +3,10 @@ import {Transformation} from "euclidean/dim2/Transformation";
 import {Vector} from "euclidean/dim2/Vector";
 import {SquareMatrix} from "euclidean/SquareMatrix";
 import {SvgGraphicElement} from "svg/SvgGraphicElement";
-import {SvgPath} from "svg/SvgPath";
 import {Dragger} from "./SvgTransformer/Dragger";
 import {Handle} from "./SvgTransformer/Handle";
 import {SvgGroup} from "./SvgTransformer/SvgGroup";
+import {SvgPath} from "./SvgTransformer/SvgPath";
 
 // A decorator class to 'transform' (resize, scale or rotate) an SVG element.
 export class SvgTransformer {

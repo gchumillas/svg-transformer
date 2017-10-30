@@ -1,5 +1,5 @@
 import {Point} from "../euclidean/dim2/Point";
-import {SvgGraphicElement} from "./SvgGraphicElement";
+import {SvgGraphicElement} from "../svg/SvgGraphicElement";
 
 export class SvgPath extends SvgGraphicElement {
   private strokeColor = "black";

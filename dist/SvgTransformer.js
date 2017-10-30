@@ -542,38 +542,7 @@ define("svg/SvgGraphicElement", ["require", "exports", "euclidean/dim2/Transform
     }(SvgElement_1.SvgElement));
     exports.SvgGraphicElement = SvgGraphicElement;
 });
-define("svg/SvgPath", ["require", "exports", "svg/SvgGraphicElement"], function (require, exports, SvgGraphicElement_2) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    var SvgPath = (function (_super) {
-        __extends(SvgPath, _super);
-        function SvgPath() {
-            var _this = _super.call(this, "path") || this;
-            _this.strokeColor = "black";
-            _this.strokeWidth = 2;
-            _this
-                .setAttr("stroke", _this.strokeColor)
-                .setAttr("stroke-width", _this.strokeWidth)
-                .setAttr("fill", "transparent");
-            return _this;
-        }
-        SvgPath.prototype.moveTo = function (value) {
-            this.setAttr("d", [this.getAttr("d") || "", "M" + value.x + " " + value.y].join(" "));
-            return this;
-        };
-        SvgPath.prototype.lineTo = function (value) {
-            this.setAttr("d", [this.getAttr("d") || "", "L" + value.x + " " + value.y].join(" "));
-            return this;
-        };
-        SvgPath.prototype.close = function () {
-            this.setAttr("d", [this.getAttr("d") || "", "Z"].join(" "));
-            return this;
-        };
-        return SvgPath;
-    }(SvgGraphicElement_2.SvgGraphicElement));
-    exports.SvgPath = SvgPath;
-});
-define("SvgTransformer/Dragger", ["require", "exports", "svg/SvgGraphicElement"], function (require, exports, SvgGraphicElement_3) {
+define("SvgTransformer/Dragger", ["require", "exports", "svg/SvgGraphicElement"], function (require, exports, SvgGraphicElement_2) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var Dragger = (function (_super) {
@@ -608,10 +577,10 @@ define("SvgTransformer/Dragger", ["require", "exports", "svg/SvgGraphicElement"]
             configurable: true
         });
         return Dragger;
-    }(SvgGraphicElement_3.SvgGraphicElement));
+    }(SvgGraphicElement_2.SvgGraphicElement));
     exports.Dragger = Dragger;
 });
-define("SvgTransformer/Handle", ["require", "exports", "euclidean/dim2/Vector", "svg/SvgGraphicElement"], function (require, exports, Vector_8, SvgGraphicElement_4) {
+define("SvgTransformer/Handle", ["require", "exports", "euclidean/dim2/Vector", "svg/SvgGraphicElement"], function (require, exports, Vector_8, SvgGraphicElement_3) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var Handle = (function (_super) {
@@ -644,7 +613,7 @@ define("SvgTransformer/Handle", ["require", "exports", "euclidean/dim2/Vector", 
             configurable: true
         });
         return Handle;
-    }(SvgGraphicElement_4.SvgGraphicElement));
+    }(SvgGraphicElement_3.SvgGraphicElement));
     exports.Handle = Handle;
 });
 define("SvgTransformer/SvgGroup", ["require", "exports", "euclidean/dim2/Transformation", "euclidean/dim2/Vector"], function (require, exports, Transformation_3, Vector_9) {
@@ -737,7 +706,38 @@ define("SvgTransformer/SvgGroup", ["require", "exports", "euclidean/dim2/Transfo
     }());
     exports.SvgGroup = SvgGroup;
 });
-define("SvgTransformer", ["require", "exports", "euclidean/dim2/Transformation", "euclidean/dim2/Vector", "euclidean/SquareMatrix", "svg/SvgGraphicElement", "svg/SvgPath", "SvgTransformer/Dragger", "SvgTransformer/Handle", "SvgTransformer/SvgGroup"], function (require, exports, Transformation_4, Vector_10, SquareMatrix_2, SvgGraphicElement_5, SvgPath_1, Dragger_1, Handle_1, SvgGroup_1) {
+define("SvgTransformer/SvgPath", ["require", "exports", "svg/SvgGraphicElement"], function (require, exports, SvgGraphicElement_4) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var SvgPath = (function (_super) {
+        __extends(SvgPath, _super);
+        function SvgPath() {
+            var _this = _super.call(this, "path") || this;
+            _this.strokeColor = "black";
+            _this.strokeWidth = 2;
+            _this
+                .setAttr("stroke", _this.strokeColor)
+                .setAttr("stroke-width", _this.strokeWidth)
+                .setAttr("fill", "transparent");
+            return _this;
+        }
+        SvgPath.prototype.moveTo = function (value) {
+            this.setAttr("d", [this.getAttr("d") || "", "M" + value.x + " " + value.y].join(" "));
+            return this;
+        };
+        SvgPath.prototype.lineTo = function (value) {
+            this.setAttr("d", [this.getAttr("d") || "", "L" + value.x + " " + value.y].join(" "));
+            return this;
+        };
+        SvgPath.prototype.close = function () {
+            this.setAttr("d", [this.getAttr("d") || "", "Z"].join(" "));
+            return this;
+        };
+        return SvgPath;
+    }(SvgGraphicElement_4.SvgGraphicElement));
+    exports.SvgPath = SvgPath;
+});
+define("SvgTransformer", ["require", "exports", "euclidean/dim2/Transformation", "euclidean/dim2/Vector", "euclidean/SquareMatrix", "svg/SvgGraphicElement", "SvgTransformer/Dragger", "SvgTransformer/Handle", "SvgTransformer/SvgGroup", "SvgTransformer/SvgPath"], function (require, exports, Transformation_4, Vector_10, SquareMatrix_2, SvgGraphicElement_5, Dragger_1, Handle_1, SvgGroup_1, SvgPath_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var SvgTransformer = (function () {
