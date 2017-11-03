@@ -38,6 +38,20 @@ export class SvgElement<Type extends SVGElement> {
     return this;
   }
 
+  public insertBefore(element: SvgElement<SVGElement>): void {
+    const nativeElement = this.nativeElement;
+    const parentNode = nativeElement.parentNode;
+
+    parentNode.insertBefore(element.nativeElement, nativeElement);
+  }
+
+  public insertAfter(element: SvgElement<SVGElement>): void {
+    const nativeElement = this.nativeElement;
+    const parentNode = nativeElement.parentNode;
+
+    parentNode.insertBefore(element.nativeElement, nativeElement.nextSibling);
+  }
+
   public prepend(element: SvgElement<SVGElement>): void {
     const firstChild = this.nativeElement.firstChild;
     if (firstChild) {

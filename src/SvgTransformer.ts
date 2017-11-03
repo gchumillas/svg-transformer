@@ -109,9 +109,11 @@ export = class SvgTransformer {
       }
     }
 
+    // creates the container and appends it after the last element
+    const lastElement = this._elements[len - 1];
     this._target = new SvgGroup(this._elements);
     this._container = new SvgGraphicElement("g");
-    this._canvas.append(this._container);
+    lastElement.insertAfter(this._container);
 
     this._createPath();
     this._createDragger();
