@@ -1,3 +1,4 @@
+import {sortNodes} from "./dom/utils";
 import {Point} from "./euclidean/dim2/Point";
 import {Transformation} from "./euclidean/dim2/Transformation";
 import {Vector} from "./euclidean/dim2/Vector";
@@ -76,7 +77,8 @@ export = class SvgTransformer {
     this._update();
   }
 
-  public show(elements: Element|Element[]|NodeListOf<Element>): void {
+  // TODO: what happens if there are duplicate elements?
+  public show(elements: Element|Element[]): void {
     const items = elements instanceof Element ? [elements] : elements;
     const len = items.length;
 
@@ -85,6 +87,7 @@ export = class SvgTransformer {
     }
 
     this.hide();
+    sortNodes(items);
 
     // gets the elements and the canvas property
     this._canvas = null;
