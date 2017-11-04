@@ -8,6 +8,7 @@ export class Dragger extends SvgGraphicElement {
   constructor() {
     super("rect");
 
+    this.nativeElement.style.cursor = "move";
     this
       .setAttr("fill", this._backgroundColor)
       .setAttr("opacity", this._opacity);
