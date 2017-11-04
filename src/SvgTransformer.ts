@@ -20,10 +20,11 @@ export = class SvgTransformer {
   private _isDraggable = true;
   private _isResizable = true;
   private _isAspectRatioPreserved = false;
+  private _isRotable = true;
   private _target: SvgGroup;
   private _elements: SvgGraphicElement[] = [];
   private _container: SvgGraphicElement;
-  private _path: SvgGraphicElement;
+  private _path: SvgPath;
   private _dragger: Dragger;
   private _rotateHandle: Handle;
   private _scaleHandles: {
@@ -104,6 +105,15 @@ export = class SvgTransformer {
 
   set isAspectRatioPreserved(value: boolean) {
     this._isAspectRatioPreserved = value;
+    this._update();
+  }
+
+  get isRotable(): boolean {
+    return this._isRotable;
+  }
+
+  set isRotable(value: boolean) {
+    this._isRotable = value;
     this._update();
   }
 
@@ -198,6 +208,7 @@ export = class SvgTransformer {
     // places rotate handle
     this._rotateHandle.position = new Vector(
       width / 2, -this._necklength / t.info.scaleY).transform(t);
+    this._rotateHandle.isVisible = this._isRotable;
 
     // places scale handles
     const orientations: {[key: string]: Vector[]} = {
@@ -253,8 +264,13 @@ export = class SvgTransformer {
       "stroke": this._stroke,
       "stroke-width": this._strokeWidth,
       "fill": "transparent"})
-      .moveTo(p0)
-      .lineTo(p1).lineTo(p2).lineTo(p3).lineTo(p4).lineTo(p5).lineTo(p1);
+      .moveTo(p1)
+      .lineTo(p2).lineTo(p3).lineTo(p4).lineTo(p5).lineTo(p1);
+
+    if (this._isRotable) {
+      this._path.lineTo(p0);
+    }
+
     this._container.prepend(this._path);
   }
 
