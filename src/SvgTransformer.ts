@@ -11,14 +11,14 @@ import {SvgPath} from "./SvgTransformer/SvgPath";
 
 // A decorator class to 'transform' (resize, scale or rotate) an SVG element.
 export = class SvgTransformer {
-  private _necklength: number = 30;
-  private _stroke: string = "black";
-  private _strokeWidth: number = 2;
-  private _handleRadius: number = 10;
+  private _necklength = 30;
+  private _stroke = "black";
+  private _strokeWidth = 2;
+  private _handleRadius = 10;
   private _canvas: SvgGraphicElement;
-  private _isVisible: boolean = false;
-  private _isDraggable: boolean = true;
-  private _isResizable: boolean = true;
+  private _isVisible = false;
+  private _isDraggable = true;
+  private _isResizable = true;
   private _target: SvgGroup;
   private _elements: SvgGraphicElement[] = [];
   private _container: SvgGraphicElement;
