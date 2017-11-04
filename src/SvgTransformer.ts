@@ -19,6 +19,7 @@ export = class SvgTransformer {
   private _isVisible = false;
   private _isDraggable = true;
   private _isResizable = true;
+  private _isAspectRatioPreserved = false;
   private _target: SvgGroup;
   private _elements: SvgGraphicElement[] = [];
   private _container: SvgGraphicElement;
@@ -94,6 +95,15 @@ export = class SvgTransformer {
 
   set isResizable(value: boolean) {
     this._isResizable = value;
+    this._update();
+  }
+
+  get isAspectRatioPreserved(): boolean {
+    return this._isAspectRatioPreserved;
+  }
+
+  set isAspectRatioPreserved(value: boolean) {
+    this._isAspectRatioPreserved = value;
     this._update();
   }
 
@@ -217,7 +227,8 @@ export = class SvgTransformer {
         const position = positions[i];
         const handle = handles[i];
 
-        handle.isVisible = this._isResizable;
+        handle.isVisible = this._isResizable &&
+          (orientation === "diagonal" || !this._isAspectRatioPreserved);
         handle.position = position.transform(t);
       }
     }
