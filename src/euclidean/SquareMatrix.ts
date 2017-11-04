@@ -26,12 +26,33 @@ export class SquareMatrix extends Matrix {
 
   // TODO: optimize for 2x2 and 3x3
   public determinant(): number {
-    const vector = this.width > 0 ? this.vectors[0] : new Vector();
-    const initVal = this.width > 0 ? 0 : 1;
+    if (this.width === 1) {
+      const [v0] = this.vectors;
+      const [a0] = v0.coordinates;
 
-    return vector.coordinates.reduce(
-      (prev, current, index) =>
-        prev + current * this._getCofactor(0, index), initVal);
+      return a0;
+    } else if (this.width === 2) {
+      const [v0, v1] = this.vectors;
+      const [a00, a01] = v0.coordinates;
+      const [a10, a11] = v1.coordinates;
+
+      return a00 * a11 - a01 * a10;
+    } else if (this.width === 3) {
+      const [v0, v1, v2] = this.vectors;
+      const [a00, a01, a02] = v0.coordinates;
+      const [a10, a11, a12] = v1.coordinates;
+      const [a20, a21, a22] = v2.coordinates;
+
+      return (a00 * a11 * a22) + (a02 * a10 * a21) + (a01 * a12 * a20)
+        - (a02 * a11 * a20) - (a00 * a12 * a20) - (a01 * a10 * a22);
+    } else {
+      const vector = this.width > 0 ? this.vectors[0] : new Vector();
+      const initVal = this.width > 0 ? 0 : 1;
+
+      return vector.coordinates.reduce(
+        (prev, current, index) =>
+          prev + current * this._getCofactor(0, index), initVal);
+    }
   }
 
   public inverse(): SquareMatrix {
