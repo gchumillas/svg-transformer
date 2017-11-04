@@ -3,6 +3,7 @@ import {SvgGraphicElement} from "../svg/SvgGraphicElement";
 export class Dragger extends SvgGraphicElement {
   private _backgroundColor = "000";
   private _opacity = 0;
+  private _isVisible = true;
 
   constructor() {
     super("rect");
@@ -10,6 +11,15 @@ export class Dragger extends SvgGraphicElement {
     this
       .setAttr("fill", this._backgroundColor)
       .setAttr("opacity", this._opacity);
+  }
+
+  get isVisible(): boolean {
+    return this._isVisible;
+  }
+
+  set isVisible(value: boolean) {
+    this._isVisible = value;
+    this.setAttr("display", this._isVisible ? "inline" : "none");
   }
 
   get width(): number {

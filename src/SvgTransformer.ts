@@ -17,6 +17,7 @@ export = class SvgTransformer {
   private _handleRadius: number = 10;
   private _canvas: SvgGraphicElement;
   private _isVisible: boolean = false;
+  private _isDraggable: boolean = true;
   private _target: SvgGroup;
   private _elements: SvgGraphicElement[] = [];
   private _container: SvgGraphicElement;
@@ -74,6 +75,15 @@ export = class SvgTransformer {
 
   set handleRadius(value: number) {
     this._handleRadius = value;
+    this._update();
+  }
+
+  get isDraggable(): boolean {
+    return this._isDraggable;
+  }
+
+  set isDraggable(value: boolean) {
+    this._isDraggable = value;
     this._update();
   }
 
@@ -159,6 +169,7 @@ export = class SvgTransformer {
     const t = this._target.transformation;
 
     this._dragger.transformation = t;
+    this._dragger.isVisible = this._isDraggable;
 
     // redraws the path
     this._path.remove();
