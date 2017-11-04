@@ -4,10 +4,20 @@ import {SvgGraphicElement} from "../svg/SvgGraphicElement";
 
 export class Handle extends SvgGraphicElement {
   private _fillColor = "transparent";
+  private _isVisible = true;
 
   constructor(attributes: {[key: string]: any} = {}) {
     super("circle", attributes);
     this.setAttr("fill", this._fillColor);
+  }
+
+  get isVisible(): boolean {
+    return this._isVisible;
+  }
+
+  set isVisible(value: boolean) {
+    this._isVisible = value;
+    this.setAttr("display", this._isVisible ? "inline" : "none");
   }
 
   get position(): Point {

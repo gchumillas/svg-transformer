@@ -18,6 +18,7 @@ export = class SvgTransformer {
   private _canvas: SvgGraphicElement;
   private _isVisible: boolean = false;
   private _isDraggable: boolean = true;
+  private _isResizable: boolean = true;
   private _target: SvgGroup;
   private _elements: SvgGraphicElement[] = [];
   private _container: SvgGraphicElement;
@@ -84,6 +85,15 @@ export = class SvgTransformer {
 
   set isDraggable(value: boolean) {
     this._isDraggable = value;
+    this._update();
+  }
+
+  get isResizable(): boolean {
+    return this._isResizable;
+  }
+
+  set isResizable(value: boolean) {
+    this._isResizable = value;
     this._update();
   }
 
@@ -207,6 +217,7 @@ export = class SvgTransformer {
         const position = positions[i];
         const handle = handles[i];
 
+        handle.isVisible = this._isResizable;
         handle.position = position.transform(t);
       }
     }
