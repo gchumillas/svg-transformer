@@ -17,7 +17,7 @@ export class Handle extends SvgGraphicElement {
 
   set isVisible(value: boolean) {
     this._isVisible = value;
-    this.setAttr("display", this._isVisible ? "inline" : "none");
+    this.nativeElement.style.display = this._isVisible ? "inline" : "none";
   }
 
   get position(): Point {
