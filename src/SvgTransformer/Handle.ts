@@ -5,7 +5,7 @@ import {SvgGraphicElement} from "../svg/SvgGraphicElement";
 export class Handle extends SvgGraphicElement {
   private _fillColor = "transparent";
 
-  constructor(attributes: {[key: string]: any}) {
+  constructor(attributes: {[key: string]: any} = {}) {
     super("circle", attributes);
     this.setAttr("fill", this._fillColor);
   }
