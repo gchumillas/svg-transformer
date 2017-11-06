@@ -1,6 +1,6 @@
 # SVG Transformer
 
-An utility to move, rotate and resize SVG elements.
+An utility to move, rotate and resize a group or a single SVG element.
 
 ![screenshot](https://user-images.githubusercontent.com/5312427/32453810-92fba0b6-c31d-11e7-952f-efc0d2dc921c.png)
 
