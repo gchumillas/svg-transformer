@@ -19,3 +19,5 @@ t.isAspectRatioPreserved = false;
 t.isRotable = true;
 t.show(elements);
 ```
+
+See the `demo` folder for a complete example.
