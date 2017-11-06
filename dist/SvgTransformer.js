@@ -8,6 +8,46 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+define("dom/utils", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    function sortNodes(nodes) {
+        return nodes.sort(function (item0, item1) {
+            var path0 = getNodePath(item0);
+            var path1 = getNodePath(item1);
+            var count0 = path0.length;
+            var count1 = path1.length;
+            var len = Math.min(count0, count1);
+            for (var i = 0; i < len; i++) {
+                if (path0[i] !== path1[i]) {
+                    return path0[i] - path1[i];
+                }
+            }
+            return count0 - count1;
+        });
+    }
+    exports.sortNodes = sortNodes;
+    function getNodePath(node) {
+        var ret = [];
+        var parentNode = node.parentNode;
+        while (parentNode !== null && !document.isSameNode(parentNode)) {
+            var childs = parentNode.childNodes;
+            var length_1 = childs.length;
+            var pos = 0;
+            for (var i = 0; i < length_1; i++) {
+                var childElement = childs[i];
+                if (childElement.isSameNode(node)) {
+                    pos = i;
+                    break;
+                }
+            }
+            ret.unshift(pos);
+            node = parentNode;
+            parentNode = node.parentNode;
+        }
+        return ret;
+    }
+});
 define("euclidean/SquareMatrix", ["require", "exports", "euclidean/Matrix", "euclidean/Vector"], function (require, exports, Matrix_1, Vector_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -40,11 +80,32 @@ define("euclidean/SquareMatrix", ["require", "exports", "euclidean/Matrix", "euc
         };
         SquareMatrix.prototype.determinant = function () {
             var _this = this;
-            var vector = this.width > 0 ? this.vectors[0] : new Vector_1.Vector();
-            var initVal = this.width > 0 ? 0 : 1;
-            return vector.coordinates.reduce(function (prev, current, index) {
-                return prev + current * _this._getCofactor(0, index);
-            }, initVal);
+            if (this.width === 1) {
+                var v0 = this.vectors[0];
+                var a0 = v0.coordinates[0];
+                return a0;
+            }
+            else if (this.width === 2) {
+                var _a = this.vectors, v0 = _a[0], v1 = _a[1];
+                var _b = v0.coordinates, a00 = _b[0], a01 = _b[1];
+                var _c = v1.coordinates, a10 = _c[0], a11 = _c[1];
+                return a00 * a11 - a01 * a10;
+            }
+            else if (this.width === 3) {
+                var _d = this.vectors, v0 = _d[0], v1 = _d[1], v2 = _d[2];
+                var _e = v0.coordinates, a00 = _e[0], a01 = _e[1], a02 = _e[2];
+                var _f = v1.coordinates, a10 = _f[0], a11 = _f[1], a12 = _f[2];
+                var _g = v2.coordinates, a20 = _g[0], a21 = _g[1], a22 = _g[2];
+                return (a00 * a11 * a22) + (a02 * a10 * a21) + (a01 * a12 * a20)
+                    - (a02 * a11 * a20) - (a00 * a12 * a20) - (a01 * a10 * a22);
+            }
+            else {
+                var vector = this.width > 0 ? this.vectors[0] : new Vector_1.Vector();
+                var initVal = this.width > 0 ? 0 : 1;
+                return vector.coordinates.reduce(function (prev, current, index) {
+                    return prev + current * _this._getCofactor(0, index);
+                }, initVal);
+            }
         };
         SquareMatrix.prototype.inverse = function () {
             return this.adjoint().scale(1 / this.determinant());
@@ -301,6 +362,29 @@ define("euclidean/dim2/Transformation", ["require", "exports", "euclidean/Transf
         Transformation.createFromValues = function (a, b, c, d, e, f) {
             return new Transformation(new Vector_5.Vector(a, b, 0), new Vector_5.Vector(c, d, 0), new Vector_5.Vector(e, f, 1));
         };
+        Object.defineProperty(Transformation.prototype, "info", {
+            get: function () {
+                var coordinates = this.vectors.map(function (v) { return v.coordinates; });
+                var _a = [
+                    coordinates[0][0], coordinates[0][1],
+                    coordinates[1][0], coordinates[1][1],
+                    coordinates[2][0], coordinates[2][1]
+                ], a = _a[0], b = _a[1], c = _a[2], d = _a[3], e = _a[4], f = _a[5];
+                var skewX = ((180 / Math.PI) * Math.atan2(d, c) - 90);
+                var skewY = ((180 / Math.PI) * Math.atan2(b, a));
+                return {
+                    translateX: e,
+                    translateY: f,
+                    scaleX: Math.sqrt(a * a + b * b),
+                    scaleY: Math.sqrt(c * c + d * d),
+                    skewX: skewX,
+                    skewY: skewY,
+                    rotation: skewX
+                };
+            },
+            enumerable: true,
+            configurable: true
+        });
         Transformation.prototype.transform = function (t) {
             return new (Transformation.bind.apply(Transformation, [void 0].concat(_super.prototype.transform.call(this, t).vectors)))();
         };
@@ -372,6 +456,16 @@ define("svg/SvgElement", ["require", "exports", "svg/SvgGraphicElement"], functi
         SvgElement.prototype.removeAttr = function (name) {
             this.nativeElement.removeAttributeNS(null, name);
             return this;
+        };
+        SvgElement.prototype.insertBefore = function (element) {
+            var nativeElement = this.nativeElement;
+            var parentNode = nativeElement.parentNode;
+            parentNode.insertBefore(element.nativeElement, nativeElement);
+        };
+        SvgElement.prototype.insertAfter = function (element) {
+            var nativeElement = this.nativeElement;
+            var parentNode = nativeElement.parentNode;
+            parentNode.insertBefore(element.nativeElement, nativeElement.nextSibling);
         };
         SvgElement.prototype.prepend = function (element) {
             var firstChild = this.nativeElement.firstChild;
@@ -551,11 +645,24 @@ define("SvgTransformer/Dragger", ["require", "exports", "svg/SvgGraphicElement"]
             var _this = _super.call(this, "rect") || this;
             _this._backgroundColor = "000";
             _this._opacity = 0;
+            _this._isVisible = true;
+            _this.nativeElement.style.cursor = "move";
             _this
                 .setAttr("fill", _this._backgroundColor)
                 .setAttr("opacity", _this._opacity);
             return _this;
         }
+        Object.defineProperty(Dragger.prototype, "isVisible", {
+            get: function () {
+                return this._isVisible;
+            },
+            set: function (value) {
+                this._isVisible = value;
+                this.nativeElement.style.display = this._isVisible ? "inline" : "none";
+            },
+            enumerable: true,
+            configurable: true
+        });
         Object.defineProperty(Dragger.prototype, "width", {
             get: function () {
                 return parseInt(this.getAttr("width"), 10);
@@ -585,19 +692,25 @@ define("SvgTransformer/Handle", ["require", "exports", "euclidean/dim2/Vector", 
     Object.defineProperty(exports, "__esModule", { value: true });
     var Handle = (function (_super) {
         __extends(Handle, _super);
-        function Handle() {
-            var _this = _super.call(this, "circle") || this;
-            _this.radius = 10;
-            _this.strokeColor = "black";
-            _this.strokeWidth = 2;
-            _this.fillColor = "transparent";
-            _this
-                .setAttr("r", _this.radius)
-                .setAttr("stroke", _this.strokeColor)
-                .setAttr("stroke-width", _this.strokeWidth)
-                .setAttr("fill", _this.fillColor);
+        function Handle(attributes) {
+            if (attributes === void 0) { attributes = {}; }
+            var _this = _super.call(this, "circle", attributes) || this;
+            _this._fillColor = "transparent";
+            _this._isVisible = true;
+            _this.setAttr("fill", _this._fillColor);
             return _this;
         }
+        Object.defineProperty(Handle.prototype, "isVisible", {
+            get: function () {
+                return this._isVisible;
+            },
+            set: function (value) {
+                this._isVisible = value;
+                this.nativeElement.style.display = this._isVisible ? "inline" : "none";
+            },
+            enumerable: true,
+            configurable: true
+        });
         Object.defineProperty(Handle.prototype, "position", {
             get: function () {
                 var x = parseInt(this.getAttr("cx"), 10);
@@ -711,15 +824,9 @@ define("SvgTransformer/SvgPath", ["require", "exports", "svg/SvgGraphicElement"]
     Object.defineProperty(exports, "__esModule", { value: true });
     var SvgPath = (function (_super) {
         __extends(SvgPath, _super);
-        function SvgPath() {
-            var _this = _super.call(this, "path") || this;
-            _this.strokeColor = "black";
-            _this.strokeWidth = 2;
-            _this
-                .setAttr("stroke", _this.strokeColor)
-                .setAttr("stroke-width", _this.strokeWidth)
-                .setAttr("fill", "transparent");
-            return _this;
+        function SvgPath(attributes) {
+            if (attributes === void 0) { attributes = {}; }
+            return _super.call(this, "path", attributes) || this;
         }
         SvgPath.prototype.moveTo = function (value) {
             this.setAttr("d", [this.getAttr("d") || "", "M" + value.x + " " + value.y].join(" "));
@@ -737,7 +844,7 @@ define("SvgTransformer/SvgPath", ["require", "exports", "svg/SvgGraphicElement"]
     }(SvgGraphicElement_4.SvgGraphicElement));
     exports.SvgPath = SvgPath;
 });
-define("SvgTransformer", ["require", "exports", "euclidean/dim2/Transformation", "euclidean/dim2/Vector", "euclidean/SquareMatrix", "svg/SvgGraphicElement", "SvgTransformer/Dragger", "SvgTransformer/Handle", "SvgTransformer/SvgGroup", "SvgTransformer/SvgPath"], function (require, exports, Transformation_4, Vector_10, SquareMatrix_2, SvgGraphicElement_5, Dragger_1, Handle_1, SvgGroup_1, SvgPath_1) {
+define("SvgTransformer", ["require", "exports", "dom/utils", "euclidean/dim2/Transformation", "euclidean/dim2/Vector", "euclidean/SquareMatrix", "svg/SvgGraphicElement", "SvgTransformer/Dragger", "SvgTransformer/Handle", "SvgTransformer/SvgGroup", "SvgTransformer/SvgPath"], function (require, exports, utils_1, Transformation_4, Vector_10, SquareMatrix_2, SvgGraphicElement_5, Dragger_1, Handle_1, SvgGroup_1, SvgPath_1) {
     "use strict";
     function _getAdjacentAngle(p0, p1, p2) {
         var u = p1.subtract(p2);
@@ -750,6 +857,16 @@ define("SvgTransformer", ["require", "exports", "euclidean/dim2/Transformation",
     }
     return (function () {
         function SvgTransformer() {
+            this._necklength = 30;
+            this._stroke = "black";
+            this._strokeWidth = 2;
+            this._handleRadius = 10;
+            this._isVisible = false;
+            this._isDraggable = true;
+            this._isResizable = true;
+            this._isAspectRatioPreserved = false;
+            this._isRotable = true;
+            this._elements = [];
         }
         Object.defineProperty(SvgTransformer.prototype, "elements", {
             get: function () {
@@ -760,7 +877,7 @@ define("SvgTransformer", ["require", "exports", "euclidean/dim2/Transformation",
         });
         Object.defineProperty(SvgTransformer.prototype, "container", {
             get: function () {
-                return this._container.nativeElement;
+                return this._container ? this._container.nativeElement : null;
             },
             enumerable: true,
             configurable: true
@@ -772,6 +889,94 @@ define("SvgTransformer", ["require", "exports", "euclidean/dim2/Transformation",
             enumerable: true,
             configurable: true
         });
+        Object.defineProperty(SvgTransformer.prototype, "neckLength", {
+            get: function () {
+                return this._necklength;
+            },
+            set: function (value) {
+                this._necklength = value;
+                this._update();
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(SvgTransformer.prototype, "stroke", {
+            get: function () {
+                return this._stroke;
+            },
+            set: function (value) {
+                this._stroke = value;
+                this._update();
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(SvgTransformer.prototype, "strokeWidth", {
+            get: function () {
+                return this._strokeWidth;
+            },
+            set: function (value) {
+                this._strokeWidth = value;
+                this._update();
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(SvgTransformer.prototype, "handleRadius", {
+            get: function () {
+                return this._handleRadius;
+            },
+            set: function (value) {
+                this._handleRadius = value;
+                this._update();
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(SvgTransformer.prototype, "isDraggable", {
+            get: function () {
+                return this._isDraggable;
+            },
+            set: function (value) {
+                this._isDraggable = value;
+                this._update();
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(SvgTransformer.prototype, "isResizable", {
+            get: function () {
+                return this._isResizable;
+            },
+            set: function (value) {
+                this._isResizable = value;
+                this._update();
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(SvgTransformer.prototype, "isAspectRatioPreserved", {
+            get: function () {
+                return this._isAspectRatioPreserved;
+            },
+            set: function (value) {
+                this._isAspectRatioPreserved = value;
+                this._update();
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(SvgTransformer.prototype, "isRotable", {
+            get: function () {
+                return this._isRotable;
+            },
+            set: function (value) {
+                this._isRotable = value;
+                this._update();
+            },
+            enumerable: true,
+            configurable: true
+        });
         SvgTransformer.prototype.show = function (elements) {
             var items = elements instanceof Element ? [elements] : elements;
             var len = items.length;
@@ -779,6 +984,7 @@ define("SvgTransformer", ["require", "exports", "euclidean/dim2/Transformation",
                 throw new Error("Argument error: zero elements");
             }
             this.hide();
+            utils_1.sortNodes(items);
             this._canvas = null;
             this._elements = [];
             for (var i = 0; i < len; i++) {
@@ -795,15 +1001,16 @@ define("SvgTransformer", ["require", "exports", "euclidean/dim2/Transformation",
                     throw new Error("Argument error: not a SVGGraphicsElement");
                 }
             }
+            var lastElement = this._elements[len - 1];
             this._target = new SvgGroup_1.SvgGroup(this._elements);
             this._container = new SvgGraphicElement_5.SvgGraphicElement("g");
-            this._canvas.append(this._container);
+            lastElement.insertAfter(this._container);
             this._createPath();
             this._createDragger();
             this._createRotateHandle();
             this._createResizeHandles();
-            this._update();
             this._isVisible = true;
+            this._update();
         };
         SvgTransformer.prototype.hide = function () {
             if (!this._isVisible) {
@@ -826,13 +1033,18 @@ define("SvgTransformer", ["require", "exports", "euclidean/dim2/Transformation",
             this._isVisible = false;
         };
         SvgTransformer.prototype._update = function () {
+            if (!this._isVisible) {
+                return;
+            }
             var width = this._target.width;
             var height = this._target.height;
             var t = this._target.transformation;
             this._dragger.transformation = t;
+            this._dragger.isVisible = this._isDraggable;
             this._path.remove();
             this._createPath();
-            this._rotateHandle.position = new Vector_10.Vector(width / 2, -30).transform(t);
+            this._rotateHandle.position = new Vector_10.Vector(width / 2, -this._necklength / t.info.scaleY).transform(t);
+            this._rotateHandle.isVisible = this._isRotable;
             var orientations = {
                 diagonal: [
                     new Vector_10.Vector(0, 0),
@@ -861,6 +1073,8 @@ define("SvgTransformer", ["require", "exports", "euclidean/dim2/Transformation",
                     }
                     var position = positions[i];
                     var handle = handles[i];
+                    handle.isVisible = this._isResizable &&
+                        (orientation_2 === "diagonal" || !this._isAspectRatioPreserved);
                     handle.position = position.transform(t);
                 }
             }
@@ -869,15 +1083,22 @@ define("SvgTransformer", ["require", "exports", "euclidean/dim2/Transformation",
             var width = this._target.width;
             var height = this._target.height;
             var t = this._target.transformation;
-            var p0 = new Vector_10.Vector(width / 2, -30).transform(t);
+            var p0 = new Vector_10.Vector(width / 2, -this._necklength / t.info.scaleY).transform(t);
             var p1 = new Vector_10.Vector(width / 2, 0).transform(t);
             var p2 = new Vector_10.Vector(0, 0).transform(t);
             var p3 = new Vector_10.Vector(0, height).transform(t);
             var p4 = new Vector_10.Vector(width, height).transform(t);
             var p5 = new Vector_10.Vector(width, 0).transform(t);
-            this._path = new SvgPath_1.SvgPath()
-                .moveTo(p0)
-                .lineTo(p1).lineTo(p2).lineTo(p3).lineTo(p4).lineTo(p5).lineTo(p1);
+            this._path = new SvgPath_1.SvgPath({
+                "stroke": this._stroke,
+                "stroke-width": this._strokeWidth,
+                "fill": "transparent"
+            })
+                .moveTo(p1)
+                .lineTo(p2).lineTo(p3).lineTo(p4).lineTo(p5).lineTo(p1);
+            if (this._isRotable) {
+                this._path.lineTo(p0);
+            }
             this._container.prepend(this._path);
         };
         SvgTransformer.prototype._createDragger = function () {
@@ -906,7 +1127,11 @@ define("SvgTransformer", ["require", "exports", "euclidean/dim2/Transformation",
             var center;
             var p0;
             var t0;
-            this._rotateHandle = new Handle_1.Handle();
+            this._rotateHandle = new Handle_1.Handle({
+                "r": this._handleRadius,
+                "stroke": this._stroke,
+                "stroke-width": this._strokeWidth
+            });
             this._container.append(this._rotateHandle);
             this._rotateHandle
                 .onStartDragging(function (p) {
@@ -955,7 +1180,12 @@ define("SvgTransformer", ["require", "exports", "euclidean/dim2/Transformation",
                     var center;
                     var p0;
                     var t0;
-                    var handle = new Handle_1.Handle();
+                    var handle = new Handle_1.Handle({
+                        "r": this_1._handleRadius,
+                        "stroke": this_1._stroke,
+                        "stroke-width": this_1._strokeWidth,
+                        "fill": "transparent"
+                    });
                     this_1._container.append(handle);
                     handle
                         .onStartDragging(function (p) {
